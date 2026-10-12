@@ -4,7 +4,7 @@
    ========================================================================== */
 (function () {
 "use strict";
-const D = window.DATA, E = window.ENGINE;
+const D = window.DATA, E = window.ENGINE, SV = window.SAVE;
 const { STATS, STAT_ORDER, BASE_STATS, ELEMENTS, CLASSES, CLASS_ORDER, CONDITIONS, GATHER_JOBS, CRAFT_JOBS, SLOTS, MONSTERS, ZONES, DUNGEONS, ITEMS, SETS, SPECIAL_CRAFTS, RES, SPELL_IMG, RUNE_SIMPLE_ONLY, HUNT_TIERS, CONSUMABLES, STAT_HELP } = D;
 
 let S = null;
@@ -16,9 +16,31 @@ const ui = {
 const BETA = /\/beta\//.test(location.pathname);
 const LS_KEY = BETA ? "dofousxen-save-beta" : "dofousxen-save";
 /* ---------- Notes de mise à jour (bandeau « mise à jour appliquée ») ---------- */
-const GAME_VERSION = "0.1.13.1";
+const GAME_VERSION = "0.1.14.1";
 const DISCORD = "https://discord.gg/9ApPgWjPUM", DISCORD_BUGS = "https://discord.gg/2xX6F9764Z"; // invitation qui ouvre directement le forum des bugs
 const CHANGELOG = [
+  { v: "0.1.14.1", name: "Héros plus malin", items: [
+    "En combat, le héros prépare tout son tour au lieu de lancer toujours la même attaque : sort de zone face à un groupe, gros coup sur le boss, élément auquel la cible résiste le moins, coup de grâce sur un monstre presque mort, et plus de dégâts perdus sur un monstre déjà vaincu",
+    "Il utilise mieux tous ses PA en combinant ses sorts, et lance donc des attaques qui ne servaient jamais ; ses invocations, protections et soins passent toujours en premier, dans l'ordre de la barre et selon leurs conditions" ] },
+  { v: "0.1.14", name: "Boss mis en scène", items: [
+    "Mise en scène des boss (mode d'animation « Complètes ») : chacune des 22 mécaniques de boss a maintenant sa propre scène dans l'arène au lieu d'un simple bandeau : Rage (vapeur et veines), Carapace (plaques qui se referment en dôme), Attaque dévastatrice (le boss aspire l'air puis lâche une onde de choc), Point faible (cible qui se fissure au coup suivant, ×1,5 affiché), Séisme (pics de pierre sous la première ligne), Riposte (parade puis contre-coup pendant le tour du héros), Reflet (double miroir et éclat au coup reçu), Miasmes (brume qui traverse l'arène), Dévoreur (le serviteur est avalé), Brise-garde (les boucliers volent en éclats), Putréfaction, Change-peau (l'ancienne peau se détache, la nouvelle teinte reste), Condamnation (crâne à compte à rebours relié au boss, puis guillotine), Mutisme (lettres qui tombent, cadenas), Terreur (ombre géante), Frénésie, Totems (dôme doré), Âmes liées (fil d'âme et dégâts qui filent vers le serviteur), Immortel (le boss part en cendres et renaît), Compte à rebours (vignette rouge et chiffre dès le tour 15)",
+    "Les 20 boss à signature ont leur scène : Distorsion du temps, Fournaise et givre, Tapis roulant, Grand banquet, Inventions (plan bleu et bombe), Marée, Sacrifice, Dédoublement, Regard pétrifiant, Aspiration, Toucher doré, Larcin, Charge du taureau, Quatre humeurs, À l'abordage, Glyphes pair et impair (glyphe permanent sous Kimbo, bleu ou rouge selon le tour, ×1,4 et ×0,7 affichés), Horloge (engrenages, pendule et compteur de tours), Racines, Glace éternelle, Appétit d'Ougah",
+    "Sorts signature de boss : une attaque sur trois environ, dix boss emblématiques lancent leur sort à eux, purement visuel et sans changer les dégâts : Bouftou Royal (Boule de laine), Batofu (Nuée de Tofus), Blop Coco Royal (Rebond gluant), Craqueleur Légendaire (Avalanche), Le Chouque (Barriques), Moon (Tambour de Moon), Dragon Cochon (Ronds de fumée), Tofu Royal (Plongeon royal), Crocabulia (Battement d'ailes), Shogun Tofugawa (Trait d'encre)",
+    "Entrée du boss : en arrivant dans sa salle, son portrait s'affiche en grand avec sa stasis, son niveau et ses mécaniques, il rugit, puis saute en place dans un nuage de poussière avant « Combat ! »",
+    "Phases de boss : à 50 % de ses PV, bandeau « Phase 2 », le boss se fissure, s'assombrit et une aura rouge pulse derrière lui ; à 25 %, « Phase 3 », les fissures s'embrasent et il tremble sans arrêt (purement visuel)",
+    "Mort du boss : écran qui blanchit, le boss bascule lourdement et s'efface dans une pluie de kamas et d'étincelles, « Vaincu ! » à son nom",
+    "En mode « Sobres », les boss gardent leur simple bandeau comme avant ; les familles de monstres et les poses des héros arriveront dans un prochain lot" ] },
+  { v: "0.1.13.3", name: "Fondations du multijoueur", items: [
+    "Rien ne change pour vous en jeu : cette version prépare le terrain du multijoueur, en coulisses",
+    "La sauvegarde a maintenant son propre module : elle pourra passer en ligne, sur un serveur, sans toucher au reste du jeu (copies de secours et reprise de partie inchangées)",
+    "Le jeu lit l'heure à un seul endroit : plus tard, le serveur pourra imposer la sienne pour éviter la triche en avançant l'horloge de l'appareil",
+    "Tout le hasard du jeu passe par le même tirage : une partie peut être rejouée à l'identique, ce qui servira au serveur pour vérifier les combats (Kolizéum)",
+    "La liste officielle des 74 actions d'un joueur (équiper, chasser, forger…) est écrite : c'est ce que le jeu enverra au serveur",
+  ] },
+  { v: "0.1.13.2", name: "Classes et donjons", items: [
+    "Laboratoire du Tynril : le Tynril Ahuri ne résiste plus à moitié au Feu, à l'Eau et à l'Air en plus de ses Quatre humeurs, et les monstres du donjon sont un peu moins forts",
+    "Cache de Kankreblath : Kankreblath ne frappe plus toute l'équipe à chaque tour, et les monstres du donjon sont un peu moins forts ; un boss n'a plus qu'un seul moyen de se soigner",
+    "Classes plus proches les unes des autres : Xélor, Huppermage, Enutrof et Eniripsa plus forts à haut niveau, Éliotrope plus fort vers le niveau 50 ; Écaflip et Roublard moins forts vers le niveau 50, Ouginak et Éliotrope moins forts à haut niveau" ] },
   { v: "0.1.13.1", name: "Dofus à leur place", items: [
     "Chaque Dofus tombe maintenant du boss qui lui correspond dans DOFUS : Cawotte dans la Grange du Tournesol Affamé (les champs), Dokoko à l'Arbre de Moon, Kaliptus chez le Koulosse (Koalaks), Émeraude chez Crocabulia, Turquoise (dragon de l'Eau) chez la Dame des Eaux, Domakuro chez le Maître Corbac, Dofus des Glaces chez Missiz Frizz, Argenté Scintillant chez la déesse Ilyzaelle",
     "Les quêtes de ces Dofus mènent à ces mêmes donjons ; la fiche de chaque donjon montre son Dofus",
@@ -272,7 +294,7 @@ const pct = (a, b) => Math.max(0, Math.min(100, b ? (a / b) * 100 : 0));
 const char = (id) => S.chars.find((c) => c.id === id);
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 const dur = (s) => { s = Math.round(s); const hh = Math.floor(s / 3600), mm = Math.floor((s % 3600) / 60); return hh ? `${hh} h ${mm} min` : mm ? `${mm} min` : `${s} s`; };
-const ago = (t) => { const s = (Date.now() - t) / 1000; return s < 60 ? "à l'instant" : s < 3600 ? `il y a ${Math.floor(s / 60)} min` : `il y a ${Math.floor(s / 3600)} h`; };
+const ago = (t) => { const s = (E.now() - t) / 1000; return s < 60 ? "à l'instant" : s < 3600 ? `il y a ${Math.floor(s / 60)} min` : `il y a ${Math.floor(s / 3600)} h`; };
 const elVar = (el) => (el === "buff" ? "var(--buff)" : `var(--el-${el || "n"})`);
 const eld = (el) => `<span class="eld" style="--c:${elVar(el)}" title="${ELEMENTS[el || "n"].name}">${ELEMENTS[el || "n"].name[0]}</span>`;
 const fmtStatVal = (k, v) => (["cri", "rt", "rf", "re", "ra"].includes(k) ? `${fmt(v)} %` : fmt(v));
@@ -645,10 +667,10 @@ const findPin = (key) => E.pins(S).find((p) => E.pinKey(p) === key);
 /* un objectif atteint reste affiché en vert jusqu'au prochain changement d'écran */
 function checkPins() {
   let changed = false;
-  E.pins(S).forEach((p) => { if (p.auto) return; const i = E.pinInfo(S, p); if (i && i.done && !p.done) { p.done = Date.now(); changed = true; toast(`Objectif atteint : ${i.label}`, "rare"); notify("pin", "Objectif atteint", i.label); } });
+  E.pins(S).forEach((p) => { if (p.auto) return; const i = E.pinInfo(S, p); if (i && i.done && !p.done) { p.done = E.now(); changed = true; toast(`Objectif atteint : ${i.label}`, "rare"); notify("pin", "Objectif atteint", i.label); } });
   if (changed) renderObjs();
 }
-function clearDonePins() { if (!S || !S.pins) return; const n = S.pins.length; S.pins = S.pins.filter((p) => !(p.done && Date.now() - p.done > 1500)); if (S.pins.length !== n) dirty = true; }
+function clearDonePins() { if (!S || !S.pins) return; const n = S.pins.length; S.pins = S.pins.filter((p) => !(p.done && E.now() - p.done > 1500)); if (S.pins.length !== n) dirty = true; }
 let rszT = null; window.addEventListener("resize", () => { clearTimeout(rszT); rszT = setTimeout(() => { if (S && ui.tab === "combat" && ui.arena) { if (ui.arena.view !== combatView()) render(); else placeEnts(S.fight); } }, 150); });
 
 /* ---------- écran de départ ---------- */
@@ -670,7 +692,7 @@ function headPick(id, sex) {
   return `<div class="stack" style="gap:4px"><span class="small muted">Tête</span><div class="headpick">${L[sx].heads.map((_, i) => `<button class="${cur === i ? "on" : ""}" data-act="starthead" data-v="${i}" aria-pressed="${cur === i}"><img src="${lookLocal(id, sx, i)}" alt="Tête ${i + 1}"></button>`).join("")}</div></div>`;
 }
 const startHeadOf = (id, sex) => { const L = LK.CLASS_LOOKS[id]; const n = L ? L[sex === "f" ? "f" : "m"].heads.length : 1; return id === "forge" ? 0 : Math.min(ui.startHead || 0, n - 1); };
-const hasPublicSave = () => { try { return !!localStorage.getItem("dofousxen-save"); } catch (e) { return false; } };
+const hasPublicSave = () => !!SV.store().get("dofousxen-save");
 function renderStart() {
   renderStatus(); renderNav();
   const sex = ui.startSex || CLASSES[ui.startCls].sex;
@@ -1011,14 +1033,14 @@ function dgDifficulty(did, k) {
   return sc < -1 ? { k: "easy", txt: "Facile" } : sc < 0.3 ? { k: "mid", txt: "Équilibré" } : { k: "risk", txt: k >= 5 && g < 40 ? "Risqué · équipement requis" : "Risqué" };
 }
 /* Mutateur de la semaine (3.1.3) */
-function weeklyLeft() { return dur((E.weekEnd() - Date.now()) / 1000).replace(/ \d+ min$/, ""); }
+function weeklyLeft() { return dur((E.weekEnd() - E.now()) / 1000).replace(/ \d+ min$/, ""); }
 function weeklyBanner() {
   const W = E.weekly(S); if (!W) return "";
   const M = E.STASIS_MODS[W.mod]; const dg = DUNGEONS[W.did];
   return `<button class="weekly" data-act="dgopen" data-id="${W.did}">${im(imgM(dg.boss), "dgboss", MONSTERS[dg.boss].name)}<span class="grow"><span class="wk">${G("star")} Mutateur de la semaine</span><b>${h(dg.name)}</b> <span class="xs muted">niv. ${dg.lvl}</span><span class="xs">Modificateur <b>${h(M.name)}</b> : ${h(M.desc.charAt(0).toLowerCase() + M.desc.slice(1))}</span></span><span class="wrew"><b>+${Math.round((E.WEEKLY_REW - 1) * 100)} %</b><span>XP et butin</span><span class="xs muted">encore ${weeklyLeft()}</span></span></button>`;
 }
 /* Mutateur éclair (0.1) : 3 donjons toutes les 20 minutes */
-function flashLeft() { const m = Math.max(1, Math.ceil((E.flashEnd() - Date.now()) / 60000)); return `${m} min`; }
+function flashLeft() { const m = Math.max(1, Math.ceil((E.flashEnd() - E.now()) / 60000)); return `${m} min`; }
 function flashBanner() {
   const L = E.flash(S); if (!L.length) return "";
   const N = E.flash(S, E.flashEnd()); const rew = Math.round((E.FLASH_REW - 1) * 100);
@@ -1331,14 +1353,14 @@ function archiBtn(cls = "btn sm") {
   return `<button class="${cls} archibtn ${n ? "on" : ""}" data-act="archis" data-tip="Album des archimonstres : ${n} âme${n > 1 ? "s" : ""} capturée${n > 1 ? "s" : ""} sur ${E.ARCHI_TOTAL}. ${st ? `${st} Pierre${st > 1 ? "s" : ""} d'âme en sac.` : "Aucune Pierre d'âme : fabriquez-en chez le Bricoleur (niveau 25)."}">${IC("dofus")} Âmes <b class="num">${n}</b> / ${E.ARCHI_TOTAL}</button>`;
 }
 function archiPill(F) {
-  const st = E.stones(S); const b = S.boosts && S.boosts.piste; const left = b && b.until > Date.now() ? Math.round((b.until - Date.now()) / 1000) : 0;
+  const st = E.stones(S); const b = S.boosts && S.boosts.piste; const left = b && b.until > E.now() ? Math.round((b.until - E.now()) / 1000) : 0;
   const here = F && F.ents.some((e) => e.side === "m" && e.archi && e.alive);
   const odds = Math.round(1 / E.archiOdds(S));
   return `<span class="pill archipill ${here ? "good" : ""}" data-act="archis" data-tip="Chance d'archimonstre : 1 sur ${odds} par monstre${left ? ` (Parfum de pistage encore ${dur(left)})` : ""}. ${st ? `${st} Pierre${st > 1 ? "s" : ""} d'âme pour capturer les âmes.` : "Sans Pierre d'âme, l'âme d'un archimonstre vaincu s'échappe."}">${here ? "Archimonstre ! " : ""}🔮 ${st} pierre${st > 1 ? "s" : ""}${left ? ` · 🧴 ${dur(left)}` : ""}</span>`;
 }
 function archiSheet() {
   const zones = E.ARCHI_ZONES; if (!ui.az || !zones.includes(ui.az)) ui.az = zones.find((z) => E.soulCount(S, z) < E.archisOf(z).length) || zones[0];
-  const f = ui.azf || "all"; const st = E.stones(S); const b = S.boosts && S.boosts.piste; const left = b && b.until > Date.now() ? Math.round((b.until - Date.now()) / 1000) : 0;
+  const f = ui.azf || "all"; const st = E.stones(S); const b = S.boosts && S.boosts.piste; const left = b && b.until > E.now() ? Math.round((b.until - E.now()) / 1000) : 0;
   const tot = E.soulCount(S); const tier = E.ocreTier(S); const odds = Math.round(1 / E.archiOdds(S));
   const tabs = zones.map((z) => { const L = E.archisOf(z); const d = E.soulCount(S, z);
     return `<button class="ztab ${z === ui.az ? "on" : ""} ${d === L.length ? "done" : ""}" data-act="aztab" data-v="${z}"><b>${h(archiZoneName(z))}</b><span class="num">${d} / ${L.length}</span><span class="bar"><i style="width:${pct(d, L.length)}%"></i></span></button>`; }).join("");
@@ -1518,12 +1540,13 @@ function axEvent(F, A, f) {
     if (f.s < 0 && axOn()) { const p = axPt(A, n, 0.45); for (let i = 0; i < (axFull() ? 6 : 3); i++) { const s = axMk(A, "bubl", p.x + axRnd(-22, 22), p.y + axRnd(-14, 14)); s.style.animationDelay = i * 50 + "ms"; axLater(s, 1100); } }
     else burst(n, f.el || "n");
     if (e && (!e.alive || f.v > e.hpMax * 0.3) && (!axOn() || axFull())) pulse(A.el, "shake");
+    if (e && e.side === "m" && axFull()) { if (f.s >= 0) bxOnHit(F, A, f); else if ((e.linked || e.minion) && F.bossIdx !== undefined) { const b = F.ents[F.bossIdx]; if (b && b.alive && b.mech && (b.mech.includes("liens") || b.mech.includes("sacrifice"))) bxOnSharedHit(F, A, f, b); } }
   } else if (f.k === "heal") { if (!n) return; floatAt(n, "+" + f.v, "#7ee06a");
     if (axOn()) { const p = axPt(A, n, 0.6); for (let i = 0; i < (axFull() ? 8 : 4); i++) { const s = axMk(A, "streak", p.x + axRnd(-24, 24), p.y + axRnd(-12, 12), { "--c": "#b6ff8a" }); s.style.animationDelay = i * 40 + "ms"; axLater(s, 1100); } const r = axMk(A, "ring", p.x, p.y, { "--c": "#8fe36a" }); axLater(r, 520); }
     else burst(n, "h");
   } else if (f.k === "buff") { if (!n || A.view === "compact") return; floatAt(n, f.txt, "var(--gold2)", true);
-    const e = F.ents[f.t]; if (e && e.side === "m" && e.mech && !/^[+−-]|^Bouclier|^Esquive|^Invulnérable|^Condamné/.test(f.txt)) axMechBanner(A, f.txt, e.name);
-  } else if (f.k === "phase") phaseFlash();
+    const e = F.ents[f.t]; if (e && e.side === "m" && e.mech && !/^[+−-]|^Bouclier|^Esquive|^Invulnérable|^Condamné/.test(f.txt) && !(axFull() && bxFor(e, f.txt))) axMechBanner(A, f.txt, e.name);
+  } else if (f.k === "phase") { const e = F.ents[f.t]; if (e && e.mech && e.mech.includes("immortel") && e.revived && axFull() && n) bxRun(F, A, e, n, [], [], "n", BXM.immortel, null); else phaseFlash(); }
 }
 /* une action = un même numéro d'événement : lancer, voyage, puis impacts */
 /* ===================== sorts signature : une mécanique unique pour 2 sorts par classe (38 sorts, maquette v4) ===================== */
@@ -1754,6 +1777,274 @@ function sgPlay(F, A, def, src, sn, hits, rest, el) {
   fn(c).catch(() => {}).finally(() => { c.flush(); c.fin.forEach((f) => { try { f(); } catch (e) { /* le nœud a pu disparaître */ } }); });
   return true;
 }
+/* ===================== boss mis en scène (maquette validée) : mécaniques, signatures, sorts de boss, entrée, phases, mort ===================== */
+/* rectangle de l'image d'une entité dans l'arène, calque « peau » posé sur sa silhouette (son image sert de masque) */
+function bxRect(A, n) { const b = axBody(n), img = b.matches("img") ? b : b.querySelector("img.look,img.sprite,img"); const r = (img || b).getBoundingClientRect(), a = A.el.getBoundingClientRect(); return { x: r.left - a.left, y: r.top - a.top, w: r.width, h: r.height, cx: r.left - a.left + r.width / 2, cy: r.top - a.top + r.height / 2, src: img ? img.src : "" }; } // src absolu : les masques CSS (var(--m)) se résolvent depuis la feuille de style
+function bxSkin(c, n, cls, bg) { const R = bxRect(c.A, n); const d = c.mk("bx b-skin " + cls, R.cx, R.cy); d.style.width = R.w + "px"; d.style.height = R.h + "px"; d.style.setProperty("--m", `url("${R.src}")`); if (bg) d.style.background = bg; return d; }
+/* contexte d'une mise en scène de boss : la boîte à outils des sorts signature, plus les héros, la bannière et quelques gestes (charge, plumes, traînée) */
+function bxCtx(F, A, src, sn, hits, rest, el) {
+  const c = sgCtx(F, A, src, sn, hits, rest, el);
+  c.heroes = F.ents.map((e, i) => (e.alive && e.side === "c" && !e.summon && A.nodes[i] ? A.nodes[i] : null)).filter(Boolean);
+  c.mons = F.ents.map((e, i) => (e.alive && e.side === "m" && A.nodes[i] !== sn && A.nodes[i] ? A.nodes[i] : null)).filter(Boolean);
+  c.ent = (n) => F.ents[A.nodes.indexOf(n)];
+  c.hero = (pred) => c.heroes.find((n) => pred(c.ent(n))) || null;
+  c.b = (cls, x, y, v) => c.mk("bx " + cls, x, y, v); c.bg = (cls, x, y, v) => c.mkg("bx " + cls, x, y, v);
+  c.rect = (n) => bxRect(A, n); c.skin = (n, cls, bg) => bxSkin(c, n, cls, bg);
+  c.banner = (txt) => axMechBanner(A, txt, src.name);
+  c.img = () => c.rect(sn).src;
+  c.filter = (n, f) => { const b = axBody(n); if (b) b.style.filter = f || ""; };
+  c.fin.push(() => { [sn, ...c.heroes, ...c.mons].forEach((n) => { if (n && n.isConnected) { c.filter(n, ""); const b = axBody(n); if (b && b.getAnimations) b.getAnimations().forEach((x) => { if (!(x instanceof CSSAnimation)) x.cancel(); }); if (n.dataset.z !== undefined) { n.style.zIndex = n.dataset.z; delete n.dataset.z; } } }); ["bx-warp", "bx-paper", "bx-bounce", "sg-rumble", "sg-beat"].forEach((k) => A.el.classList.remove(k)); c.dim(false); });
+  /* course jusqu'à une cible, puis retour */
+  c.charge = async (n, t, onHit, dur = 820) => { const a = c.pt(n), b = c.pt(t), dir = b.x > a.x ? 1 : -1; const dx = b.x - a.x - dir * 40, dy = b.y - a.y; c.z(n, true);
+    c.anim(n, [{ transform: "none" }, { transform: `translateX(${-dir * 10}px)`, offset: 0.15 }, { transform: `translate(${dx}px,${dy}px) scale(1.06)`, offset: 0.45 }, { transform: `translate(${dx}px,${dy}px)`, offset: 0.62 }, { transform: "none" }], { duration: dur, easing: "ease-in-out" });
+    await c.wait(dur * 0.45); if (onHit) await onHit(); await c.wait(dur * 0.55); c.z(n, false); };
+  c.feathers = (n, k = 8, cls = "b-feather") => { const R = c.rect(n); for (let i = 0; i < k; i++) { const fe = c.b(cls, R.cx + c.rnd(-R.w / 4, R.w / 4), R.cy); fe.animate([{ transform: "translate(-50%,-50%) rotate(0)", opacity: 1 }, { transform: `translate(calc(-50% + ${c.rnd(-80, 80)}px),calc(-50% + ${c.rnd(-70, 40)}px)) rotate(${c.rnd(-300, 300)}deg)`, opacity: 0 }], { duration: 900 * c.T, easing: "ease-out" }); c.later(fe, 920); } };
+  c.trail = (n, cls, every = 70, life = 360, op = 0.6) => { const t = setInterval(() => { if (ui.arena !== A || !n.isConnected) return clearInterval(t); const g = c.clone(n, "bx " + cls); g.animate([{ opacity: op }, { opacity: 0 }], { duration: life * c.T, fill: "forwards" }); c.later(g, life + 20); }, every * c.T); c.fin.push(() => clearInterval(t)); return () => clearInterval(t); };
+  c.scatter = (x, y, cls, k, dist = 50, dur = 600) => { for (let i = 0; i < k; i++) { const s = c.b(cls, x, y); s.animate([{ transform: "translate(-50%,-50%) rotate(0)", opacity: 1 }, { transform: `translate(calc(-50% + ${c.rnd(-dist, dist)}px),calc(-50% + ${c.rnd(-dist, dist * 0.6)}px)) rotate(${c.rnd(-300, 300)}deg)`, opacity: 0 }], { duration: dur * c.T, easing: "ease-out" }); c.later(s, dur + 20); } };
+  c.dust = (x, y, k = 3) => { for (let i = 0; i < k; i++) { const d = c.mk("dust", x + c.rnd(-12, 12), y + c.rnd(-4, 4)); d.animate([{ opacity: 0.75, transform: "translate(-50%,-50%)" }, { opacity: 0, transform: `translate(calc(-50% + ${c.rnd(-20, 20)}px),-150%) scale(1.7)` }], { duration: 500 * c.T }); c.later(d, 520); } };
+  c.link = (cls, a, b, ms) => { const dx = b.x - a.x, dy = b.y - a.y; const d = c.b(cls, a.x, a.y); d.style.width = Math.hypot(dx, dy) + "px"; d.style.transform = `rotate(${Math.atan2(dy, dx)}rad)`; if (ms) c.later(d, ms); return d; };
+  c.hitSeq = async (list, gap = 90) => { for (const n of list) { c.hit(n); if (gap) await c.wait(gap); } };
+  return c;
+}
+/* ---- les 22 mécaniques communes : une mise en scène par mécanique (hits = coups du moteur quand la mécanique frappe) ---- */
+const BXM = {
+  enrage: async (c) => { c.hold(1500); c.banner("Rage"); const b = axBody(c.me); for (const s of [0.35, 0.7, 1]) { c.filter(c.me, `sepia(${s}) saturate(${1 + s * 5}) hue-rotate(-${s * 25}deg)`); const p = c.pt(c.me, 0.05); for (let i = 0; i < 3; i++) { const v = c.b("b-steam", p.x + c.rnd(-16, 16), p.y); v.style.animationDelay = i * 80 + "ms"; c.later(v, 900); } await c.wait(300); }
+    c.anim(c.me, [{ transform: "scale(1)" }, { transform: "scale(1.22)", offset: 0.4 }, { transform: "scale(1.12)" }], { duration: 400 }); const q = c.pt(c.me, 0.15); const v = c.b("b-vein", q.x + 22, q.y); c.later(v, 1600); c.shake("shake2"); await c.wait(900); c.filter(c.me, ""); if (b && b.getAnimations) b.getAnimations().forEach((x) => x.cancel()); },
+  shield: async (c) => { c.hold(1500); c.banner("Carapace"); const R = c.rect(c.me); const rad = R.w * 0.62;
+    for (let i = 0; i < 6; i++) { const ang = (i / 6) * Math.PI * 2 - Math.PI / 2; const p = c.b("b-plate", R.cx + Math.cos(ang) * rad, R.cy + Math.sin(ang) * rad); p.style.setProperty("--r", (ang * 180 / Math.PI + 90) + "deg"); p.animate([{ transform: `translate(calc(-50% + ${Math.cos(ang) * 160}px),calc(-50% + ${Math.sin(ang) * 160}px)) rotate(var(--r))`, opacity: 0 }, { transform: "translate(-50%,-50%) rotate(var(--r))", opacity: 1 }], { duration: 320 * c.T, delay: i * 70 * c.T, easing: "cubic-bezier(.3,1.4,.6,1)", fill: "both" }); c.later(p, 2000); }
+    await c.wait(800); const sh = c.b("b-dome", R.cx, R.cy); sh.style.width = sh.style.height = rad * 2.3 + "px"; c.later(sh, 1400); await c.wait(900); },
+  charge_prep: async (c) => { c.hold(1300); const d = document.createElement("div"); d.className = "axbanner warn"; d.innerHTML = `<div class="k">${h(c.src.name)} · au prochain tour</div><div class="n">Attaque dévastatrice</div>`; c.A.fxl.appendChild(d); axLater(d, 2000);
+    const p = c.pt(c.me, 0.5); for (let i = 0; i < 18; i++) { const ang = c.rnd(0, Math.PI * 2), r = c.rnd(90, 170); const m = c.b("b-inhale", p.x + Math.cos(ang) * r, p.y + Math.sin(ang) * r); m.animate([{ left: p.x + Math.cos(ang) * r + "px", top: p.y + Math.sin(ang) * r + "px", opacity: 0 }, { opacity: 1, offset: 0.3 }, { left: p.x + "px", top: p.y + "px", opacity: 0 }], { duration: 700 * c.T, delay: i * 50 * c.T, fill: "both" }); c.later(m, 700 + i * 50); }
+    c.anim(c.me, [{ transform: "none" }, { transform: "scale(1.18,1.12)" }, { transform: "none" }], { duration: 1500 }); await c.wait(1500); },
+  charge_fire: async (c) => { c.hold(1400); c.banner("Attaque dévastatrice"); const p = c.pt(c.me, 0.5); c.anim(c.me, [{ transform: "scale(1.18,1.12)" }, { transform: "scale(.9,1.05)", offset: 0.4 }, { transform: "none" }], { duration: 500 }); await c.wait(200);
+    const w = c.b("b-shockwall", p.x, p.y); w.animate([{ left: p.x + "px", opacity: 1 }, { left: "-60px", opacity: 0.4 }], { duration: 500 * c.T, easing: "ease-in", fill: "forwards" }); c.later(w, 520); c.shake("shake2");
+    await c.hitSeq([...c.tg].sort((a, b) => c.pt(b).x - c.pt(a).x), 110); await c.wait(300); },
+  weakspot: async (c) => { c.hold(600); c.banner("Point faible"); const R = c.rect(c.me); const ws = c.b("b-weak", R.cx + R.w * 0.08, R.cy); c.later(ws, 2400); c.A.bxWeak = ws; await c.wait(500); },
+  festin: async (c) => { c.hold(900); const a = c.tg[0]; if (!a) return; c.hit(a); const ha = a.querySelector(".hpb"), hb = c.me.querySelector(".hpb"); if (!ha || !hb) return; const r = c.A.el.getBoundingClientRect(), A1 = ha.getBoundingClientRect(), B1 = hb.getBoundingClientRect();
+    const ch = c.b("b-hpchunk", A1.left - r.left + A1.width * 0.75, A1.top - r.top + 3); ch.animate([{ left: A1.left - r.left + A1.width * 0.75 + "px", top: A1.top - r.top + 3 + "px" }, { left: (A1.left + B1.left) / 2 - r.left + "px", top: Math.min(A1.top, B1.top) - r.top - 40 + "px", offset: 0.5 }, { left: B1.left - r.left + B1.width * 0.75 + "px", top: B1.top - r.top + 3 + "px" }], { duration: 700 * c.T, easing: "ease-in-out", fill: "forwards" }); c.later(ch, 720); await c.wait(700); },
+  seisme: async (c) => { c.hold(1500); c.banner("Séisme"); c.anim(c.me, [{ transform: "none" }, { transform: "translateY(-30px)", offset: 0.5 }, { transform: "translateY(4px) scaleY(.9)", offset: 0.8 }, { transform: "none" }], { duration: 600 }); await c.wait(450); c.shake("shake2");
+    const a = c.foot(c.me), t0 = c.tg[0] ? c.foot(c.tg[0]) : { x: 40, y: a.y }; for (let i = 1; i <= 7; i++) { const x = a.x + (t0.x - a.x) * i / 7, y = a.y + (t0.y - a.y) * i / 7; const s = c.b("b-spike", x, y + 4); s.style.setProperty("--h", 30 + i * 7 + "px"); s.style.animationDelay = i * 55 * c.T + "ms"; c.later(s, 1300 + i * 55); setTimeout(() => c.dust(x, y, 2), (i * 55 + 80) * c.T); }
+    await c.wait(420); c.tg.forEach((n) => c.anim(n, [{ transform: "none" }, { transform: "translateY(-40px) rotate(-6deg)", offset: 0.4 }, { transform: "none" }], { duration: 600 })); await c.hitSeq(c.tg, 60); await c.wait(500); },
+  riposte: async (c, hitFx) => { const p = c.pt(c.me, 0.45); const x = c.b("b-parry", p.x - 20, p.y); c.later(x, 900); const fl = c.mk("flashw", p.x - 20, p.y); c.later(fl, 250); c.banner("Riposte"); await c.wait(250); const t = c.A.nodes[hitFx.t]; if (t) c.anim(t, [{ transform: "none" }, { transform: `translateX(${c.dir(t) * -50}px) rotate(-12deg)`, offset: 0.4 }, { transform: "none" }], { duration: 600 }); axEvent(c.F, c.A, hitFx); },
+  reflet: async (c) => { c.hold(700); c.banner("Reflet"); const g = c.clone(c.me, "bx b-mirror"); g.animate([{ opacity: 0 }, { opacity: 1, offset: 0.2 }, { opacity: 1, offset: 0.8 }, { opacity: 0 }], { duration: 1900 * c.T, fill: "forwards" }); c.later(g, 1920); await c.wait(600); },
+  miasmes: async (c) => { const f = c.b("b-fog", c.W(), 0); f.animate([{ transform: "translateX(0)", opacity: 0 }, { transform: `translateX(-${c.W() + 80}px)`, opacity: 0.9, offset: 0.6 }, { transform: `translateX(-${c.W() + 80}px)`, opacity: 0 }], { duration: 2000 * c.T, fill: "forwards" }); c.later(f, 2000); await c.wait(900); c.heroes.forEach((n) => c.anim(n, [{ transform: "none" }, { transform: "translateY(3px) rotate(-3deg)" }, { transform: "none" }, { transform: "translateY(3px) rotate(3deg)" }, { transform: "none" }], { duration: 600 })); },
+  devoreur: async (c) => { c.hold(1200); c.banner("Dévoreur"); const m = c.mons.find((n) => !c.ent(n).alive) || c.mons[0]; if (!m) return; const a = c.pt(m), b = c.pt(c.me, 0.35); c.z(m, true);
+    c.anim(m, [{ transform: "none" }, { transform: `translate(${(b.x - a.x) * 0.3}px,${(b.y - a.y) * 0.3}px) scaleX(1.4) scaleY(.8)`, offset: 0.4 }, { transform: `translate(${b.x - a.x}px,${b.y - a.y}px) scale(.1)`, opacity: 0.3 }], { duration: 700, easing: "ease-in", fill: "forwards" }); await c.wait(700);
+    c.anim(c.me, [{ transform: "none" }, { transform: "scale(1.2,.9)" }, { transform: "none" }, { transform: "scale(1.15,.92)" }, { transform: "none" }], { duration: 600 }); await c.wait(600); },
+  brise: async (c) => { c.hold(1200); c.banner("Brise-garde"); c.anim(c.me, [{ transform: "none" }, { transform: "translateY(-16px)", offset: 0.5 }, { transform: "translateY(4px) scaleY(.9)" }, { transform: "none" }], { duration: 450 }); await c.wait(380); c.shake("shake");
+    c.heroes.forEach((n) => { const R = c.rect(n); const g = c.b("b-glasscrack", R.cx, R.cy); g.style.width = g.style.height = R.w * 1.15 + "px"; c.later(g, 600); }); await c.wait(550);
+    c.heroes.forEach((n) => { const R = c.rect(n); for (let i = 0; i < 8; i++) { const s = c.b("b-glass", R.cx + c.rnd(-R.w / 2, R.w / 2), R.cy + c.rnd(-R.h / 3, R.h / 3)); s.animate([{ transform: "translate(-50%,-50%) rotate(0)", opacity: 1 }, { transform: `translate(calc(-50% + ${c.rnd(-30, 30)}px),calc(-50% + ${c.rnd(40, 80)}px)) rotate(${c.rnd(-200, 200)}deg)`, opacity: 0 }], { duration: 600 * c.T, easing: "ease-in" }); c.later(s, 620); } }); await c.wait(500); },
+  putrefaction: async (c) => { c.hold(1200); c.banner("Putréfaction"); c.heroes.forEach((n) => { const R = c.rect(n); for (let i = 0; i < 6; i++) { const d = c.b("b-rotdrip", R.cx + c.rnd(-R.w / 2, R.w / 2), -10); d.style.setProperty("--fy", R.cy + c.rnd(-10, 20) + "px"); d.style.animationDelay = (i * 90 + c.rnd(0, 60)) * c.T + "ms"; c.later(d, 1200); } });
+    await c.wait(700); c.heroes.forEach((n) => c.filter(n, "sepia(.7) saturate(.6) brightness(.85)")); await c.wait(1100); c.heroes.forEach((n) => c.filter(n, "")); },
+  peau: async (c, _f, el) => { c.hold(1300); c.banner("Change-peau : " + (BX_ELN[el] || "")); const old = c.clone(c.me, "bx b-oldskin"); const HUE = { f: "-30deg", e: "190deg", t: "40deg", a: "100deg" }; c.filter(c.me, `hue-rotate(${HUE[el] || "190deg"}) saturate(1.5)`);
+    old.animate([{ transform: "translate(-50%,-50%)", opacity: 1, filter: "none" }, { transform: "translate(-50%,-45%) scale(1.05)", opacity: 0.8, offset: 0.3 }, { transform: "translate(-50%,-20%) scale(1.1,.6)", opacity: 0, filter: "blur(3px) grayscale(1)" }], { duration: 1100 * c.T, fill: "forwards" }); c.later(old, 1120);
+    const R = c.rect(c.me); for (let i = 0; i < 10; i++) { const s = c.b("b-flake", R.cx + c.rnd(-R.w / 2, R.w / 2), R.cy + c.rnd(-R.h / 2, R.h / 2)); s.style.animationDelay = c.rnd(0, 500) * c.T + "ms"; c.later(s, 1400); } await c.wait(1400); },
+  condamne: async (c, _f, tn) => { c.hold(1200); c.banner("Condamnation"); const t = tn || c.hero((e) => c.F.ents.some((m) => m.alive && m.doom && m.doom.i === c.F.ents.indexOf(e))); if (!t) return; const p = c.pt(t, 0), b = c.pt(c.me, 0.4);
+    const sk = c.b("b-skull", p.x, p.y - 30); sk.innerHTML = "<b>2</b>"; sk.animate([{ transform: "translate(-50%,-160%)", opacity: 0 }, { transform: "translate(-50%,-50%)", opacity: 1 }], { duration: 400 * c.T, fill: "forwards", easing: "ease-out" }); c.later(sk, 2200); c.link("b-chain", b, { x: p.x, y: p.y - 30 }, 2200); await c.wait(1000); },
+  condamne_exec: async (c) => { c.hold(900); const t = c.tg[0]; if (!t) return; const p = c.pt(t, 0); const g = c.b("b-guil", p.x, -20); g.animate([{ top: "-20px" }, { top: c.pt(t, 0.3).y + "px" }], { duration: 200 * c.T, easing: "cubic-bezier(.6,0,1,.6)", fill: "forwards" }); c.later(g, 600); await c.wait(200); c.shake("shake2"); c.hit(t); await c.wait(400); },
+  mutisme: async (c) => { c.hold(1000); c.banner("Mutisme"); const t = c.hero((e) => e.silence >= 3); if (!t) return; const p = c.pt(t, 0.3); for (let i = 0; i < 6; i++) { const l = c.b("b-fallletter", p.x + c.rnd(-20, 20), p.y); l.textContent = "SORTS"[i % 5]; l.style.animationDelay = i * 90 * c.T + "ms"; c.later(l, 1300); }
+    const lk = c.b("b-lock", p.x, p.y + 6); lk.animate([{ transform: "translate(-50%,-50%) scale(2)", opacity: 0 }, { transform: "translate(-50%,-50%) scale(1)", opacity: 1 }], { duration: 250 * c.T, fill: "forwards" }); await c.wait(450); lk.classList.add("shut"); c.later(lk, 1100); await c.wait(500); },
+  terreur: async (c) => { c.hold(1400); c.banner("Terreur"); const t = c.hero((e) => e.fearT >= 3) || c.heroes[0]; if (!t) return; const sh = c.clone(c.me, "bx b-looming"); const R = c.rect(t); sh.style.left = R.cx + 70 + "px"; sh.style.top = R.cy - 20 + "px";
+    sh.animate([{ transform: "translate(-50%,-50%) scale(1)", opacity: 0 }, { transform: "translate(-50%,-60%) scale(2.6)", opacity: 0.5, offset: 0.4 }, { transform: "translate(-50%,-60%) scale(2.7)", opacity: 0.45, offset: 0.8 }, { transform: "translate(-50%,-60%) scale(2.8)", opacity: 0 }], { duration: 1800 * c.T, fill: "forwards" }); c.later(sh, 1820);
+    c.anim(t, [{ transform: "translateX(-2px)" }, { transform: "translateX(2px)" }], { duration: 60, iterations: 10 }); await c.wait(1300); },
+  frenesie: async (c) => { const st = c.b("b-stamp", c.pt(c.me, 0.1).x, c.pt(c.me, 0.1).y); st.textContent = "×2"; c.later(st, 900); c.trail(c.me, "b-ghost", 60, 380, 0.65); await c.wait(1200); },
+  totems: async (c) => { c.hold(1300); c.banner("Totems"); const f = c.foot(c.me), R = c.rect(c.me); const T = [-1, 1].map((s) => { const t = c.b("b-totem", f.x + s * R.w * 0.85, f.y); t.innerHTML = "<i></i><i></i><i></i>"; c.later(t, 2600); return t; }); await c.wait(700);
+    T.forEach((t) => t.classList.add("lit")); const d = c.b("b-golddome", R.cx, R.cy); d.style.width = d.style.height = R.w * 1.6 + "px"; c.later(d, 1900); await c.wait(700); },
+  liens: async (c) => { c.hold(900); c.banner("Âmes liées"); const m = c.mons.find((n) => c.ent(n).linked) || c.mons[0]; if (!m) return; c.link("b-soul", c.pt(c.me, 0.45), c.pt(m, 0.45), 2200); await c.wait(800); },
+  immortel: async (c) => { c.hold(1900); const R = c.rect(c.me); const b = axBody(c.me); b.animate([{ opacity: 1, filter: "none" }, { opacity: 0, filter: "brightness(2.5) sepia(1) saturate(4) hue-rotate(-20deg)" }], { duration: 500 * c.T, fill: "forwards" }); c.banner("Immortel");
+    const AS = []; for (let i = 0; i < 26; i++) { const s = c.b("b-ash", R.cx + c.rnd(-R.w / 2, R.w / 2), R.cy + c.rnd(-R.h / 2, R.h / 2)); AS.push(s); s.animate([{ transform: "translate(-50%,-50%)" }, { transform: `translate(-50%,${c.rnd(20, 50)}px)` }], { duration: 700 * c.T, fill: "forwards", easing: "ease-in" }); }
+    await c.wait(1000); AS.forEach((s, i) => { const ang = (i / AS.length) * Math.PI * 4; s.animate([{ left: s.style.left, top: s.style.top }, { left: R.cx + Math.cos(ang) * 40 + "px", top: R.cy + Math.sin(ang) * 20 + "px", offset: 0.6 }, { left: R.cx + "px", top: R.cy + "px", opacity: 0 }], { duration: 800 * c.T, fill: "forwards" }); c.later(s, 820); });
+    await c.wait(800); b.getAnimations().forEach((x) => { if (!(x instanceof CSSAnimation)) x.cancel(); }); const fl = c.mk("flashw", R.cx, R.cy); c.later(fl, 250); c.anim(c.me, [{ transform: "scale(1)" }, { transform: "scale(1.12)" }, { transform: "scale(1)" }, { transform: "scale(1.1)" }, { transform: "scale(1)" }], { duration: 700 }); await c.wait(700); },
+  rebours: async (c, _f, left) => { c.hold(700); const v = c.b("b-vignette", 0, 0); v.style.setProperty("--k", Math.min(1, (6 - left) / 6)); c.later(v, 1800); const n = c.b("b-count", c.W() / 2, c.H() * 0.45); n.textContent = left; c.later(n, 1500); A_beat(c); await c.wait(600); },
+  rebours_end: async (c) => { c.hold(1200); const v = c.b("b-vignette", 0, 0); v.style.setProperty("--k", 1); c.later(v, 2000); c.banner("Temps écoulé"); c.whiteout(300); await c.wait(900); },
+};
+const A_beat = (c) => { c.A.el.classList.remove("sg-beat"); void c.A.el.offsetWidth; c.A.el.classList.add("sg-beat"); };
+/* ---- les 20 boss à signature ---- */
+const BXS = {
+  distorsion: async (c) => { c.hold(1600); c.banner("Distorsion du temps"); const sp = c.b("b-spiral", c.W() / 2, c.H() / 2); c.later(sp, 2000); c.cls("warp", true); A_cls(c, "bx-warp", 1500); const fr = c.b("b-frost", 0, 0); c.later(fr, 2200); await c.wait(1500); },
+  fournaise: async (c, _f, el) => { c.hold(1600); c.banner("Fournaise et givre"); const L = c.b("b-half ice", 0, 0), R = c.b("b-half fire", 0, 0); c.later(L, 2400); c.later(R, 2400);
+    for (let i = 0; i < 14; i++) { const s = c.b("b-snow", c.rnd(0, c.W() / 2), -10); s.style.animationDelay = c.rnd(0, 1600) * c.T + "ms"; c.later(s, 2300); const e = c.b("b-ember", c.rnd(c.W() / 2, c.W()), c.H() + 5); e.style.animationDelay = c.rnd(0, 1600) * c.T + "ms"; c.later(e, 2300); }
+    await c.wait(1100); L.classList.add("swap"); R.classList.add("swap"); await c.wait(700); },
+  tapis: async (c) => { c.hold(1300); c.banner("Tapis roulant"); const b = c.bg("b-belt", 0, 0); c.later(b, 2200); await c.wait(1200); },
+  banquet: async (c) => { c.hold(1500); c.banner("Grand banquet"); const m = c.mons.find((n) => !c.ent(n).alive) || c.mons[0]; if (!m) return; const f = c.foot(m), p = c.pt(m, 0.2); const pl = c.bg("b-plate2", f.x, f.y - 4); c.later(pl, 1700); const cut = c.b("b-cutlery", p.x, p.y - 20); c.later(cut, 1100); await c.wait(800);
+    const a = c.pt(m), b = c.pt(c.me, 0.35); c.z(m, true); c.anim(m, [{ transform: "none" }, { transform: `translate(${b.x - a.x}px,${b.y - a.y}px) scale(.1)`, opacity: 0 }], { duration: 500, easing: "ease-in", fill: "forwards" }); await c.wait(500);
+    c.anim(c.me, [{ transform: "none" }, { transform: "scale(1.25,1.05)", offset: 0.4 }, { transform: "scale(1.1)" }], { duration: 500, fill: "forwards" }); await c.wait(700); },
+  inventions: async (c) => { c.hold(1400); c.banner("Inventions"); const g = c.b("b-blueprint", 0, 0); c.later(g, 1300); const p = c.pt(c.me, 0.3); for (let i = 0; i < 5; i++) { const gr = c.b("b-gear", p.x, p.y); gr.animate([{ transform: "translate(-50%,-50%) rotate(0)", opacity: 1 }, { transform: `translate(calc(-50% + ${c.rnd(-120, 40)}px),calc(-50% + ${c.rnd(-60, 40)}px)) rotate(${c.rnd(200, 500)}deg)`, opacity: 0 }], { duration: 900 * c.T, delay: i * 70 * c.T, fill: "both" }); c.later(gr, 1000 + i * 70); }
+    await c.wait(600); const bm = c.b("b-bomb", p.x - 70, -30); bm.innerHTML = "<b>3</b>"; bm.animate([{ top: "-30px" }, { top: c.foot(c.me).y - 20 + "px" }], { duration: 450 * c.T, easing: "cubic-bezier(.5,0,1,.5)", fill: "forwards" }); c.later(bm, 1500); await c.wait(900); },
+  maree: async (c) => { c.hold(1500); c.banner("Marée montante"); const t0 = c.tg[0]; const tx = t0 ? c.pt(t0).x : 60; const w = c.b("b-bigwave", c.W() + 120, c.H() * 0.55); w.animate([{ left: c.W() + 120 + "px" }, { left: tx + "px", offset: 0.75 }, { left: tx - 60 + "px", opacity: 0 }], { duration: 1300 * c.T, easing: "ease-in", fill: "forwards" }); c.later(w, 1320); await c.wait(950);
+    c.tg.forEach((n) => { const R = c.rect(n); for (let i = 0; i < 8; i++) { const fo = c.b("b-foam", R.cx + c.rnd(-R.w / 2, R.w / 2), R.y + R.h); fo.style.animationDelay = c.rnd(0, 200) * c.T + "ms"; c.later(fo, 900); } }); await c.hitSeq(c.tg, 60); await c.wait(300); },
+  sacrifice: async (c) => { c.hold(900); c.banner("Sacrifice"); const a = c.pt(c.me, 0.4); c.mons.slice(0, 3).forEach((m) => c.link("b-thread", a, c.pt(m, 0.4), 2200)); await c.wait(800); },
+  double: async (c) => { c.hold(1500); c.banner("Dédoublement"); const r = c.clone(c.me, "bx b-chroma red"), k = c.clone(c.me, "bx b-chroma cyan"); for (const [el, s] of [[r, -1], [k, 1]]) el.animate([{ transform: "translate(-50%,-50%)" }, { transform: `translate(calc(-50% + ${s * 8}px),-50%)` }, { transform: `translate(calc(-50% + ${s * 3}px),-50%)` }, { transform: `translate(calc(-50% + ${s * 10}px),-50%)` }], { duration: 900 * c.T, fill: "forwards" }); await c.wait(900);
+    k.remove(); const d = c.mons.find((n) => c.ent(n).isDouble); const R = c.rect(c.me); const to = d ? c.pt(d) : { x: R.cx + 80, y: R.cy - 30 }; r.animate([{ transform: "translate(-50%,-50%)", opacity: 0.8 }, { transform: `translate(calc(-50% + ${to.x - R.cx}px),calc(-50% + ${to.y - R.cy}px))`, opacity: 0 }], { duration: 500 * c.T, fill: "forwards" }); c.later(r, 520); await c.wait(600); },
+  petrif: async (c) => { c.hold(1700); c.banner("Regard pétrifiant"); const t = c.hero((e) => e.stun > 0) || c.heroes[0]; const ey = c.b("b-eye", c.W() / 2, 34); ey.innerHTML = "<i></i>"; c.later(ey, 2400); await c.wait(500); if (!t) return; const p = c.pt(t, 0.4); const cone = c.b("b-gaze", c.W() / 2, 34); const dx = p.x - c.W() / 2, dy = p.y - 34; cone.style.height = Math.hypot(dx, dy) + "px"; cone.style.transform = `translate(-50%,0) rotate(${Math.atan2(-dx, dy)}rad)`; c.later(cone, 1500);
+    await c.wait(300); const st = c.skin(t, "b-stone"); st.animate([{ backgroundPosition: "0 0%" }, { backgroundPosition: "0 100%" }], { duration: 900 * c.T, fill: "forwards" }); c.later(st, 2000); await c.wait(900); st.classList.add("cracked"); await c.wait(600); },
+  aspiration: async (c) => { c.hold(1600); c.banner("Aspiration"); const p = c.pt(c.me, 0.45); const v = c.b("b-vortex", p.x, p.y); c.later(v, 2200); await c.wait(400);
+    for (const n of c.heroes) { const R = c.rect(n); const b = c.b("b-bubfly", R.cx, R.cy); b.style.width = b.style.height = R.w * 0.9 + "px"; const kf = []; for (let i = 0; i <= 10; i++) { const t = i / 10, ang = t * Math.PI * 3, r = (1 - t) * 50; kf.push({ left: R.cx + (p.x - R.cx) * t + Math.cos(ang) * r + "px", top: R.cy + (p.y - R.cy) * t + Math.sin(ang) * r + "px", transform: `translate(-50%,-50%) scale(${1 - t * 0.85})` }); } b.animate(kf, { duration: 900 * c.T, fill: "forwards", easing: "ease-in" }); c.later(b, 920); await c.wait(120); }
+    await c.wait(900); },
+  dore: async (c) => { c.hold(1500); c.banner("Toucher doré"); const t = c.hero((e) => e.gold > 0) || c.heroes[0]; if (!t) return; await c.charge(c.me, t, async () => { const g = c.skin(t, "b-gold"); g.animate([{ backgroundSize: "0% 0%" }, { backgroundSize: "260% 260%" }], { duration: 800 * c.T, fill: "forwards" }); c.later(g, 1800); const R = c.rect(t); for (let i = 0; i < 10; i++) { const s = c.b("b-sparkle", R.cx + c.rnd(-R.w / 2, R.w / 2), R.cy + c.rnd(-R.h / 2, R.h / 2)); s.style.animationDelay = c.rnd(0, 900) * c.T + "ms"; c.later(s, 1800); } }); },
+  larcin: async (c) => { c.hold(1400); c.banner("Larcin"); const t = c.heroes.sort((x, y) => (c.ent(y).shield || 0) - (c.ent(x).shield || 0))[0] || c.heroes[0]; if (!t) return; const a = c.pt(c.me, 0.4), b = c.pt(t, 0.45), dx = b.x - a.x, dy = b.y - a.y; const arm = c.b("b-arm", a.x, a.y); arm.style.transform = `rotate(${Math.atan2(dy, dx)}rad)`; arm.innerHTML = "<i></i>";
+    arm.animate([{ width: "0px" }, { width: Math.hypot(dx, dy) + "px" }], { duration: 380 * c.T, fill: "forwards", easing: "ease-out" }); await c.wait(420); const bb = c.b("b-bubfly", b.x, b.y); bb.style.width = bb.style.height = "60px"; bb.animate([{ left: b.x + "px", top: b.y + "px" }, { left: a.x + "px", top: a.y + "px" }], { duration: 380 * c.T, fill: "forwards" }); arm.animate([{ width: Math.hypot(dx, dy) + "px" }, { width: "0px" }], { duration: 380 * c.T, fill: "forwards", easing: "ease-in" }); await c.wait(400); arm.remove(); bb.remove(); },
+  taureau: async (c) => { c.hold(1900); c.banner("Charge du taureau"); const t = c.tg[0]; if (!t) return; const f = c.foot(c.me); for (let i = 0; i < 3; i++) { c.anim(c.me, [{ transform: "none" }, { transform: "translateX(10px) rotate(4deg)" }, { transform: "none" }], { duration: 260 }); c.dust(f.x + 30, f.y - 4, 2); await c.wait(280); }
+    const p = c.pt(c.me, 0.3); for (let i = 0; i < 2; i++) { const s = c.b("b-steam", p.x - 26, p.y + 10); s.style.animationDelay = i * 100 + "ms"; c.later(s, 800); } c.filter(c.me, "sepia(.5) saturate(3) hue-rotate(-20deg)"); await c.wait(350);
+    const a = c.pt(c.me), b = c.pt(t); c.z(c.me, true); c.anim(c.me, [{ transform: "none" }, { transform: `translate(${b.x - a.x + 30}px,${b.y - a.y}px)` }], { duration: 380, easing: "cubic-bezier(.5,0,1,.6)", fill: "forwards" }); await c.wait(380); const sk = c.bg("b-skid", (a.x + b.x) / 2, c.foot(t).y); sk.style.width = Math.abs(a.x - b.x) + "px"; c.later(sk, 1400);
+    c.anim(t, [{ transform: "none" }, { transform: "translate(-40px,-60px) rotate(-30deg)", offset: 0.4 }, { transform: "none" }], { duration: 700 }); c.hit(t); await c.wait(300); c.anim(c.me, [{ transform: `translate(${b.x - a.x + 30}px,${b.y - a.y}px)` }, { transform: "none" }], { duration: 500, fill: "forwards" }); await c.wait(520); c.cancel(c.me); c.z(c.me, false); c.filter(c.me, ""); },
+  humeurs: async (c, _f, el) => { c.hold(1700); c.banner("Quatre humeurs"); const M = [["sepia(.6) saturate(5) hue-rotate(-30deg)", [{ transform: "translateX(-4px)" }, { transform: "translateX(4px)" }], 60, 6], ["hue-rotate(180deg) saturate(1.4)", [{ transform: "none" }, { transform: "scaleY(.82) translateY(10%)" }], 400, 1], ["hue-rotate(80deg) saturate(1.6)", [{ transform: "none" }, { transform: "translateY(-22px)" }, { transform: "none" }], 260, 2], ["sepia(.8) brightness(.8)", [{ transform: "rotate(-8deg)" }, { transform: "rotate(8deg)" }], 300, 2]];
+    for (const [fl, kf, d, it] of M) { c.filter(c.me, fl); c.anim(c.me, kf, { duration: d, iterations: it, direction: "alternate" }); await c.wait(d * it + 100); } const FIN = { f: M[0][0], e: M[1][0], a: M[2][0], t: M[3][0] }; c.filter(c.me, FIN[el] || M[2][0]); await c.wait(700); c.filter(c.me, ""); },
+  abordage: async (c) => { c.hold(1200); c.banner("À l'abordage !"); const fl = c.b("b-jolly", c.W() - 60, 10); c.later(fl, 2600); await c.wait(300); for (let i = 0; i < 2; i++) { const rope = c.b("b-rope", c.W() * (0.62 + i * 0.12), -10); c.later(rope, 900); await c.wait(250); } await c.wait(500); },
+  glyphes: async (c) => { c.hold(600); c.banner("Glyphes pair et impair"); await c.wait(500); },
+  horloge: async (c, _f, left) => { c.hold(900); const R = c.rect(c.me); const c1 = c.bg("b-cog big", R.cx - 30, R.cy - 20), c2 = c.bg("b-cog", R.cx + 40, R.cy - 50); c.later(c1, 2400); c.later(c2, 2400); const pd = c.bg("b-pendulum", R.cx, R.y - 10); c.later(pd, 2400); const n = c.b("b-turncount", c.W() / 2, 40); n.innerHTML = `Tour <b>${20 - left}</b> / 20`; c.later(n, 2200); await c.wait(800); },
+  racines: async (c) => { c.hold(1300); c.banner("Racines"); const t = c.hero((e) => e.rooted >= 3) || c.heroes[0]; if (!t) return; const R = c.rect(t), f = c.foot(t); let html = ""; for (let i = 0; i < 4; i++) { const x0 = f.x + (i - 1.5) * 16, hh = R.h * c.rnd(0.7, 1); html += `<path d="M${x0} ${f.y} C ${x0 + 30} ${f.y - hh * 0.3}, ${x0 - 30} ${f.y - hh * 0.6}, ${x0 + (i % 2 ? 12 : -12)} ${f.y - hh}" fill="none" stroke="${i % 2 ? "#5a3a1a" : "#7a5226"}" stroke-width="${7 - i}" stroke-linecap="round" pathLength="1"/>`; }
+    const s = c.svg(html, 2200); s.classList.add("b-roots"); await c.wait(900); c.anim(t, [{ transform: "none" }, { transform: "rotate(-3deg)" }, { transform: "rotate(3deg)" }, { transform: "none" }], { duration: 500 }); await c.wait(400); },
+  glace: async (c) => { c.hold(1700); c.banner("Glace éternelle"); for (let i = 0; i < 40; i++) { const s = c.b("b-blizz", c.rnd(0, c.W() + 200), -10); s.style.animationDelay = c.rnd(0, 1500) * c.T + "ms"; c.later(s, 2300); } await c.wait(600); const t = c.hero((e) => e.stun > 0) || c.heroes[0]; if (!t) return;
+    const f = c.foot(t), R = c.rect(t); for (let i = 0; i < 7; i++) { const cr = c.b("b-crystal", f.x + (i - 3) * (R.w / 6), f.y); cr.style.setProperty("--h", R.h * (0.5 + (3 - Math.abs(i - 3)) * 0.15) + "px"); cr.style.setProperty("--r", (i - 3) * 8 + "deg"); cr.style.animationDelay = i * 50 * c.T + "ms"; c.later(cr, 1900); }
+    await c.wait(400); c.filter(t, "saturate(.3) brightness(1.3) hue-rotate(160deg)"); await c.wait(900); c.filter(t, ""); },
+  appetit: async (c) => { c.hold(1300); c.banner("Appétit d'Ougah"); c.dim(true); const t = c.b("b-maw top", 0, 0), b = c.b("b-maw bot", 0, 0); c.later(t, 1400); c.later(b, 1400); await c.wait(700); c.shake("shake2"); await c.wait(500); c.dim(false); },
+};
+const A_cls = (c, k, ms) => { c.A.el.classList.add(k); setTimeout(() => c.A.el.classList.remove(k), ms * c.T); };
+/* ---- sorts signature de 10 boss phares : purement visuels, l'attaque normale prend cette forme environ une fois sur trois (clé = image du boss) ---- */
+const BXSP = {
+  74: async (c) => { c.hold(1900); c.banner("Boule de laine"); const a = c.pt(c.me); c.z(c.me, true); c.anim(c.me, [{ transform: "none" }, { transform: "scale(.7) rotate(-90deg)" }], { duration: 300, fill: "forwards" }); await c.wait(300);
+    c.anim(c.me, [{ transform: "scale(.7) rotate(-90deg)" }, { transform: `translate(${-a.x - 80}px,-10px) scale(.7) rotate(-1080deg)` }], { duration: 900, easing: "linear", fill: "forwards" });
+    const fy = c.foot(c.me).y; const tt = setInterval(() => { if (ui.arena !== c.A) return clearInterval(tt); const p = c.pt(c.me); const t = c.b("b-tuft", p.x + c.rnd(-10, 10), p.y + c.rnd(-14, 14)); c.later(t, 600); c.dust(p.x + 14, fy - 8, 1); }, 55 * c.T); setTimeout(() => clearInterval(tt), 950 * c.T);
+    const order = [...c.heroes].sort((x, y) => c.pt(y).x - c.pt(x).x); order.forEach((n) => { const t = (a.x - c.pt(n).x) / (a.x + 80); setTimeout(() => { c.anim(n, [{ transform: "none" }, { transform: "rotate(-80deg) translateY(20px)", offset: 0.3 }, { transform: "rotate(-80deg) translateY(20px)", offset: 0.7 }, { transform: "none" }], { duration: 900 }); c.hit(n); }, 900 * t * c.T); });
+    await c.wait(1000); c.cancel(c.me); axBody(c.me).animate([{ transform: "translateX(200px) scale(.7)", opacity: 0 }, { transform: "none", opacity: 1 }], { duration: 400 * c.T }); await c.wait(500); c.z(c.me, false); },
+  446: async (c) => { c.hold(1700); c.banner("Nuée de Tofus"); const T = c.tg.length ? c.tg : c.heroes; for (let i = 0; i < 12; i++) { const n = T[i % T.length], b = c.pt(n, 0.4), x0 = c.W() + 20 + (i % 4) * 30, y0 = -20 - Math.floor(i / 4) * 20; const d = c.b("b-tofu", x0, y0); d.animate([{ left: x0 + "px", top: y0 + "px" }, { left: b.x + c.rnd(-14, 14) + "px", top: b.y + "px", offset: 0.6 }, { left: b.x - 160 + "px", top: -40 + "px" }], { duration: 1100 * c.T, delay: i * 70 * c.T, easing: "ease-in-out", fill: "both" }); c.later(d, 1200 + i * 70); }
+    await c.wait(700); for (const n of T) { c.hit(n); c.feathers(n, 5, "b-feather sm"); await c.wait(140); } await c.wait(500); },
+  645: async (c) => { c.hold(1900); c.banner("Rebond gluant"); const t = c.tg[0] || c.heroes[0]; if (!t) return; const a = c.pt(c.me), b = c.pt(t), f0 = c.foot(c.me); c.z(c.me, true); let px = 0, py = 0;
+    for (let i = 1; i <= 3; i++) { const x = (b.x - a.x) * i / 3, y = (b.y - a.y) * i / 3; c.anim(c.me, [{ transform: `translate(${px}px,${py}px) scaleY(.75)` }, { transform: `translate(${(px + x) / 2}px,${(py + y) / 2 - 70}px) scaleY(1.1)`, offset: 0.5 }, { transform: `translate(${x}px,${y}px) scale(1.25,.7)` }], { duration: 380, easing: "ease-in-out", fill: "forwards" }); await c.wait(380); px = x; py = y;
+      const s = c.bg("b-goo", f0.x + x, f0.y + y - 4); c.later(s, 2000); c.scatter(f0.x + x, f0.y + y - 10, "b-drop", 7, 46, 500); c.shake("shake"); if (i === 3) c.hitAll(0); }
+    c.anim(c.me, [{ transform: `translate(${px}px,${py}px)` }, { transform: "none" }], { duration: 450, fill: "forwards" }); await c.wait(470); c.cancel(c.me); c.z(c.me, false); },
+  183: async (c) => { c.hold(2000); c.banner("Avalanche"); c.cls("rumble", true); const T = c.tg.length ? c.tg : c.heroes;
+    for (let i = 0; i < 5; i++) { const n = T[i % T.length], b = c.foot(n), y0 = c.H() * 0.35; const r = c.b("b-boulder", c.W() + 30, y0); r.style.setProperty("--s", c.rnd(0.7, 1.2)); r.animate([{ left: c.W() + 30 + "px", top: y0 + "px", transform: "translate(-50%,-50%) rotate(0)" }, { left: b.x + 60 + "px", top: b.y - 30 + "px", offset: 0.55, transform: "translate(-50%,-50%) rotate(-300deg)" }, { left: b.x + 20 + "px", top: b.y - 50 + "px", offset: 0.7, transform: "translate(-50%,-50%) rotate(-380deg)" }, { left: -60 + "px", top: b.y - 20 + "px", transform: "translate(-50%,-50%) rotate(-900deg)" }], { duration: 1200 * c.T, delay: i * 180 * c.T, easing: "ease-in", fill: "both" }); c.later(r, 1250 + i * 180);
+      setTimeout(() => c.hit(n), (i * 180 + 760) * c.T); [[660, 60, -10], [840, 20, -30]].forEach(([t, dx, dy]) => setTimeout(() => c.dust(b.x + dx, b.y + dy, 3), (i * 180 + t) * c.T)); }
+    await c.wait(2000); c.cls("rumble", false); },
+  126: async (c) => { c.hold(1800); c.banner("Barriques"); const a = c.foot(c.me); const T = c.tg.length ? c.tg : c.heroes;
+    for (let i = 0; i < 3; i++) { const n = T[i % T.length], b = c.foot(n); const br = c.b("b-barrel", a.x, a.y - 16); br.animate([{ left: a.x + "px", top: a.y - 16 + "px", transform: "translate(-50%,-50%) rotate(0)" }, { left: b.x + "px", top: b.y - 16 + "px", transform: "translate(-50%,-50%) rotate(-720deg)" }], { duration: 700 * c.T, delay: i * 260 * c.T, easing: "ease-in", fill: "both" }); c.later(br, 900 + i * 260);
+      setTimeout(() => { c.anim(n, [{ transform: "none" }, { transform: "translateX(-30px) rotate(-15deg)" }, { transform: "none" }], { duration: 500 }); c.hit(n); br.remove(); c.scatter(b.x, b.y - 16, "b-stave", 7, 60, 650); const sp = c.b("b-splash", b.x, b.y - 10); c.later(sp, 500); }, (700 + i * 260) * c.T); }
+    await c.wait(1800); },
+  123: async (c) => { c.hold(1900); c.banner("Tambour de Moon"); const f = c.foot(c.me); const dr = c.bg("b-drum", f.x - 50, f.y - 20); c.later(dr, 2400); for (let i = 0; i < 8; i++) { const l = c.b("b-leaf", c.rnd(0, c.W()), -20); l.style.animationDelay = c.rnd(0, 1800) * c.T + "ms"; c.later(l, 2400); }
+    for (let i = 0; i < 3; i++) { dr.classList.remove("pop2"); void dr.offsetWidth; dr.classList.add("pop2"); A_cls(c, "bx-bounce", 350); const w = c.bg("b-groundwave", f.x - 50, f.y); c.later(w, 800); await c.wait(250); if (i === 2) c.hitAll(0); await c.wait(350); } },
+  60: async (c) => { c.hold(1900); c.banner("Ronds de fumée"); const a = c.pt(c.me, 0.35); const T = c.tg.length ? c.tg : c.heroes;
+    for (let i = 0; i < 3; i++) { const n = T[i % T.length], b = c.pt(n, 0.35); const r = c.b("b-smokering", a.x - 20, a.y); r.animate([{ left: a.x - 20 + "px", top: a.y + "px", transform: "translate(-50%,-50%) scale(.4)", opacity: 0.9 }, { left: b.x + "px", top: b.y + "px", transform: "translate(-50%,-50%) scale(1.6)", opacity: 0.8, offset: 0.85 }, { left: b.x - 30 + "px", top: b.y - 20 + "px", transform: "translate(-50%,-50%) scale(2.2)", opacity: 0 }], { duration: 1000 * c.T, delay: i * 300 * c.T, fill: "both", easing: "ease-out" }); c.later(r, 1100 + i * 300); setTimeout(() => c.hit(n), (850 + i * 300) * c.T); }
+    await c.wait(1900); },
+  204: async (c) => { c.hold(2100); c.banner("Plongeon royal"); const t = c.tg[0] || c.heroes[0]; if (!t) return; const a = c.pt(c.me), b = c.pt(t); c.z(c.me, true); c.feathers(c.me, 6, "b-feather sm"); const f0 = c.foot(c.me), f1 = c.foot(t); const sh = c.bg("shadow", f0.x, f0.y - 2); sh.animate([{ transform: "translate(-50%,-50%) scale(1)", opacity: 0.9 }, { transform: "translate(-50%,-50%) scale(.35)", opacity: 0.4 }], { duration: 900 * c.T, fill: "forwards" });
+    c.anim(c.me, [{ transform: "none" }, { transform: "translateY(-30px) rotate(-6deg)" }, { transform: "translateY(-80px) rotate(6deg)" }, { transform: `translate(${(b.x - a.x) * 0.3}px,-${a.y + 40}px)` }], { duration: 900, fill: "forwards" }); await c.wait(900); sh.animate([{ left: f0.x + "px", top: f0.y - 2 + "px" }, { left: f1.x + "px", top: f1.y - 2 + "px" }], { duration: 500 * c.T, fill: "forwards" });
+    const cr = c.b("b-crown", a.x + (b.x - a.x) * 0.3, 18); c.later(cr, 700); await c.wait(500); sh.animate([{ transform: "translate(-50%,-50%) scale(.35)" }, { transform: "translate(-50%,-50%) scale(1.1)" }], { duration: 300 * c.T, fill: "forwards" }); setTimeout(() => sh.remove(), 320 * c.T);
+    c.anim(c.me, [{ transform: `translate(${(b.x - a.x) * 0.3}px,-${a.y + 40}px)` }, { transform: `translate(${b.x - a.x + 30}px,${b.y - a.y}px) rotate(-40deg)` }], { duration: 300, easing: "cubic-bezier(.6,0,1,.6)", fill: "forwards" }); await c.wait(300); c.feathers(t, 12); c.hit(t); c.anim(c.me, [{ transform: `translate(${b.x - a.x + 30}px,${b.y - a.y}px)` }, { transform: "none" }], { duration: 500, fill: "forwards" }); await c.wait(520); c.cancel(c.me); c.z(c.me, false); },
+  479: async (c) => { c.hold(2000); c.banner("Battement d'ailes"); const R = c.rect(c.me); const wl = c.bg("b-wing l", R.cx, R.cy), wr = c.bg("b-wing r", R.cx, R.cy); c.later(wl, 2000); c.later(wr, 2000); await c.wait(450); const T = c.tg.length ? c.tg : c.heroes;
+    for (let k = 0; k < 2; k++) { wl.classList.remove("flap"); wr.classList.remove("flap"); void wl.offsetWidth; wl.classList.add("flap"); wr.classList.add("flap"); for (let i = 0; i < 10; i++) { const g = c.b("b-gust", R.x, c.rnd(c.H() * 0.3, c.H() * 0.95)); g.animate([{ left: R.x + "px", opacity: 0.8 }, { left: "-120px", opacity: 0 }], { duration: 500 * c.T, delay: i * 30 * c.T, fill: "both", easing: "ease-in" }); c.later(g, 560 + i * 30); }
+      T.forEach((n) => c.anim(n, [{ transform: "none" }, { transform: "translateX(-28px) rotate(-6deg)" }, { transform: "none" }], { duration: 600 })); if (k === 1) await c.hitSeq(T, 30); await c.wait(400); } },
+  2095: async (c) => { c.hold(1900); c.banner("Trait d'encre"); A_cls(c, "bx-paper", 1300); await c.wait(350); const T = c.tg.length ? c.tg : c.heroes; const y = c.pt(T[0] || c.me, 0.45).y; const s = c.svg(`<path d="M${c.W() - 40} ${y - 30} C ${c.W() * 0.6} ${y + 20}, ${c.W() * 0.35} ${y - 30}, 20 ${y + 10}" fill="none" stroke="#111" stroke-width="16" stroke-linecap="round" pathLength="1"/>`, 1900); s.classList.add("b-ink");
+    await c.wait(900); for (let i = 0; i < 16; i++) { const d = c.b("b-inkdrop", c.rnd(20, c.W() - 40), y + c.rnd(-30, 30)); d.style.setProperty("--s", c.rnd(0.4, 1.4)); c.later(d, 900); } await c.hitSeq(T, 40); await c.wait(400); },
+};
+/* ---- déclencheurs ---- */
+const BX_TAG = { "Rage !": "enrage", "Carapace": "shield", "⚠ Charge": "charge_prep", "Point faible": "weakspot", "Brise-garde": "brise", "Putréfaction": "putrefaction", "Condamnation": "condamne", "Mutisme": "mutisme", "Terreur": "terreur", "Totems": "totems", "Âmes liées": "liens", "Séisme": "seisme", "Reflet": "reflet", "Temps écoulé": "rebours_end",
+  "Distorsion": "distorsion", "Tapis roulant": "tapis", "Bombe": "inventions", "Marée": "maree", "Dédoublement": "double", "Pétrification": "petrif", "Aspiration": "aspiration", "Toucher doré": "dore", "Larcin": "larcin", "Charge": "taureau", "Abordage": "abordage", "Racines": "racines", "Glace": "glace" };
+const BX_EL = { Feu: "f", Eau: "e", Terre: "t", Air: "a" }, BX_ELN = { f: "Feu", e: "Eau", t: "Terre", a: "Air" };
+/* trouve la mise en scène d'une étiquette de mécanique (buff posé sur le boss par le moteur) */
+function bxFor(e, txt) {
+  const has = (k) => (e.mech || []).includes(k);
+  if (txt === "Festin") return has("appetit") ? ["appetit", BXS.appetit] : has("banquet") ? ["banquet", BXS.banquet] : ["devoreur", BXM.devoreur];
+  if (BX_EL[txt]) { const el = BX_EL[txt]; return has("fournaise") ? ["fournaise", BXS.fournaise, el] : has("humeurs") ? ["humeurs", BXS.humeurs, el] : ["peau", BXM.peau, el]; }
+  const k = BX_TAG[txt]; if (!k) return null;
+  return [k, BXM[k] || BXS[k]];
+}
+/* joue une mise en scène et retient les actions suivantes ; rend sa durée de retenue (ms) ou 0 */
+function bxRun(F, A, src, sn, hits, rest, el, fn, arg) {
+  if (!axFull() || !sn || !fn) return 0;
+  const c = bxCtx(F, A, src, sn, hits, rest, el); A.sgHold = 0;
+  fn(c, arg && arg.fx, arg && arg.x).catch(() => {}).finally(() => { c.flush(); c.fin.forEach((f) => { try { f(); } catch (e) { /* nœud disparu */ } }); });
+  return Math.max(0, (A.sgHold || 0) - Date.now());
+}
+/* tour d'un boss : les étiquettes de mécaniques du groupe jouent l'une après l'autre, puis l'attaque (sort signature de boss ou attaque ordinaire) ; les mécaniques qui frappent consomment les coups du moteur */
+function bxBossGroup(F, A, g, cast, src, sn, hits, rest, el, go) {
+  const M = src.mech || [], has = (k) => M.includes(k);
+  const tags = rest.filter((f) => f.k === "buff" && f.t === cast.s && bxFor(src, f.txt));
+  let left = rest.filter((f) => !tags.includes(f)), hitsLeft = hits.slice();
+  const Q = [], post = []; // [mise en scène, coups, argument]
+  const cond = tags.find((f) => f.txt === "Condamnation");
+  if (cond) { const b = rest.find((f) => f.k === "buff" && f.txt === "Condamné"); A.bxDoom = b && A.nodes[b.t] ? { e: F.ents[b.t], n: A.nodes[b.t], until: F.round + 3 } : null; }
+  tags.forEach((f) => { const [k, fn, x] = bxFor(src, f.txt); if (!fn) return;
+    if (["seisme", "maree", "taureau"].includes(k)) { Q.push([fn, hitsLeft, { fx: f }]); hitsLeft = []; }
+    else Q.push([fn, [], { fx: f, x: k === "condamne" && A.bxDoom ? A.bxDoom.n : x }]); });
+  if (A.bxDoom && F.round > A.bxDoom.until) A.bxDoom = null;
+  if (A.bxDoom && !cond && !src.doom) { const dh = hitsLeft.find((f) => F.ents[f.t] === A.bxDoom.e && f.v >= src.dmg * 1.3); if (dh) { Q.push([BXM.condamne_exec, [dh]]); hitsLeft = hitsLeft.filter((f) => f !== dh); A.bxDoom = null; } }
+  if (tags.some((f) => f.txt === "⚠ Charge")) A.bxCharge = F.round;
+  else if (A.bxCharge && has("charge") && hitsLeft.length && !src.charging) { if (F.round - A.bxCharge <= 2) { Q.push([BXM.charge_fire, hitsLeft]); hitsLeft = []; } A.bxCharge = 0; }
+  if (has("sacrifice") && !A.bxSacr && F.round <= 2) { A.bxSacr = true; Q.push([BXS.sacrifice, []]); }
+  if ((has("horloge") || has("rebours")) && !src.isDouble && F.round >= 15 && F.round < 20 && A.bxTick !== F.round) { A.bxTick = F.round; Q.push([has("horloge") ? BXS.horloge : BXM.rebours, [], { x: 20 - F.round }]); }
+  const sp = BXSP[src.img];
+  if (!Q.length && sp && hitsLeft.length && Math.random() < 0.34) { Q.push([sp, hitsLeft]); hitsLeft = []; }
+  if (has("miasmes")) Q.unshift([BXM.miasmes, []]);
+  if (has("festin") && hitsLeft.length && left.some((f) => f.k === "heal" && f.t === cast.s)) { const heals = left.filter((f) => f.k === "heal" && f.t === cast.s); left = left.filter((f) => !heals.includes(f)); post.push([BXM.festin, hitsLeft.slice(0, 1), null, heals]); hitsLeft = hitsLeft.slice(1); }
+  if (!Q.length && !post.length) return false;
+  const fren = has("frenesie") && g.filter((f) => f.k === "cast").length >= 2;
+  const finish = () => { if (fren) bxRun(F, A, src, sn, [], [], el, BXM.frenesie, null);
+    if (hitsLeft.length || !hits.length) go(hitsLeft, left); else left.forEach((f) => axEvent(F, A, f));
+    let t = 500; post.forEach(([fn, hs, arg, after]) => setTimeout(() => { const d = bxRun(F, A, src, sn, hs, [], el, fn, arg); A.sgHold = Math.max(A.sgHold || 0, Date.now() + d); (after || []).forEach((f) => setTimeout(() => axEvent(F, A, f), d)); }, t)); if (post.length) A.sgHold = Math.max(A.sgHold || 0, Date.now() + t + 700); };
+  const step = () => { if (ui.arena !== A) return; const it = Q.shift(); if (!it) return finish(); const d = bxRun(F, A, src, sn, it[1], [], el, it[0], it[2]); A.sgHold = Date.now() + d + 700; setTimeout(step, d ? d + 60 : 0); };
+  A.sgHold = Date.now() + 700; step(); return true;
+}
+/* riposte d'un boss pendant le tour d'un héros : parade puis contre-coup */
+function bxReact(F, A, f) {
+  if (!axFull() || f.s < 0) return false; const b = F.ents[f.s], t = F.ents[f.t], bn = A.nodes[f.s]; if (!b || !t || !bn || b.side !== "m" || !b.mech || !b.mech.includes("riposte") || t.side !== "c") return false;
+  bxRun(F, A, b, bn, [], [], f.el || "n", BXM.riposte, { fx: f }); return true;
+}
+/* glyphe permanent sous un boss à glyphes : bleu aux tours pairs (il encaisse ×1,4), rouge aux tours impairs (×0,7) */
+function bxGlyph(F, A, e, n) {
+  if (!A.fxg || !axOn() || !e.alive) { if (A.bxGly) { A.bxGly.remove(); A.bxGly = null; } return; }
+  const even = F.round % 2 === 0; let g = A.bxGly; if (!g || !g.isConnected) { g = axMk(A, "bx b-glyph", 0, 0); A.fxg.appendChild(g); A.bxGly = g; g.dataset.r = -1; }
+  if (+g.dataset.r !== F.round) { g.dataset.r = F.round; const f = axFoot(A, n); g.style.left = f.x + "px"; g.style.top = f.y - 2 + "px"; g.classList.toggle("even", even); g.classList.toggle("odd", !even); }
+}
+/* réactions : point faible fissuré, reflet, riposte, âmes liées / sacrifice, immortel, compte à rebours */
+function bxOnHit(F, A, f) {
+  if (!axFull()) return false; const e = F.ents[f.t], n = A.nodes[f.t]; if (!e || !n || e.side !== "m" || !e.mech) return false;
+  const p = axPt(A, n, 0.45);
+  if (e.weakOpen && A.bxWeak && A.bxWeak.isConnected) { A.bxWeak.classList.add("cracked"); const w = A.bxWeak; A.bxWeak = null; setTimeout(() => w.remove(), 600); floatAt(n, "×1,5", "#ffd84d", true); }
+  if (e.reflect && f.s >= 0) { const m = axMk(A, "bx b-mirrorflash", p.x, p.y); axLater(m, 300); }
+  if (e.mech.includes("glyphes") && f.s >= 0) floatAt(n, F.round % 2 === 0 ? "×1,4" : "×0,7", F.round % 2 === 0 ? "#4fa8ff" : "#ff5b5b", true);
+  return false;
+}
+function bxOnSharedHit(F, A, f, boss) { // dégâts partagés avec un serviteur : moitié du chiffre qui file le long du lien
+  if (!axFull()) return; const bn = A.nodes[F.ents.indexOf(boss)], mn = A.nodes[f.t]; if (!bn || !mn) return; const a = axPt(A, bn, 0.45), b = axPt(A, mn, 0.45);
+  const cls = (boss.mech || []).includes("liens") ? "b-soul" : "b-thread"; const dx = b.x - a.x, dy = b.y - a.y; const l = axMk(A, "bx " + cls, a.x, a.y); l.style.width = Math.hypot(dx, dy) + "px"; l.style.transform = `rotate(${Math.atan2(dy, dx)}rad)`; axLater(l, 900);
+  const hn = axMk(A, "bx b-halfnum", a.x, a.y - 20); hn.textContent = "−" + f.v; hn.animate([{ left: a.x + "px", top: a.y - 20 + "px" }, { left: b.x + "px", top: b.y - 20 + "px" }], { duration: 450, fill: "forwards" }); axLater(hn, 700);
+}
+/* entrée du boss : portrait en grand, rugissement, puis il saute en place */
+function bxIntro(F, A) {
+  const bi = F.bossIdx, b = F.ents[bi], n = A.nodes[bi]; if (!b || !n || !axFull()) return false;
+  const c = bxCtx(F, A, b, n, [], [], "n"); const body = axBody(n); const lvl = b.lvl || F.lvl || "";
+  (async () => { body.style.visibility = "hidden"; c.dim(true, true); await c.wait(250);
+    const card = c.b("b-intro" + (b.legend ? " legend" : ""), c.W() / 2, c.H() / 2); card.innerHTML = `<img src="${c.img()}" alt=""><div class="t"><small>${F.stasis > 1 ? `Stasis ${F.stasis} · ` : ""}${b.legend ? "Boss légendaire" : "Boss"}${lvl ? ` · niveau ${lvl}` : ""}</small><b>${h(b.name)}</b><span>${(b.mech || []).map((m) => h(E.BOSS_MECHS[m].name)).join(" · ")}</span></div>`;
+    card.animate([{ transform: "translate(-50%,-50%) scale(.6)", opacity: 0 }, { transform: "translate(-50%,-50%) scale(1.04)", opacity: 1, offset: 0.7 }, { transform: "translate(-50%,-50%) scale(1)" }], { duration: 500 * c.T, easing: "ease-out", fill: "forwards" }); await c.wait(1000);
+    const im = card.querySelector("img"); im.animate([{ transform: "scale(1)" }, { transform: "scale(1.18) rotate(-3deg)", offset: 0.3 }, { transform: "scale(1.12) rotate(2deg)", offset: 0.6 }, { transform: "scale(1)" }], { duration: 700 * c.T }); c.shake("shake2");
+    for (let i = 0; i < 3; i++) { const r = c.b("b-roar", c.W() / 2 - 40, c.H() / 2 - 10); r.style.animationDelay = i * 120 * c.T + "ms"; c.later(r, 1000); } await c.wait(1100);
+    card.animate([{ transform: "translate(-50%,-50%)", opacity: 1 }, { transform: "translate(-50%,-80%) scale(.8)", opacity: 0 }], { duration: 300 * c.T, fill: "forwards", easing: "ease-in" }); c.later(card, 320); c.dim(false); await c.wait(250);
+    body.style.visibility = ""; body.animate([{ transform: "translateY(-260px) scale(1.1)", opacity: 0 }, { transform: "translateY(0) scale(1.1)", opacity: 1, offset: 0.6 }, { transform: "scaleY(.85) scaleX(1.12)", offset: 0.75 }, { transform: "none" }], { duration: 600 * c.T, easing: "ease-in" }); await c.wait(380);
+    c.shake("shake2"); const f = c.foot(n); c.dust(f.x, f.y - 4, 8); await c.wait(400); c.banner("Combat !"); })().catch(() => {}).finally(() => { if (body.isConnected) body.style.visibility = ""; c.dim(false); });
+  A.sgHold = Date.now() + 2900 * SG_T; return true;
+}
+/* phases : à 50 % et 25 % de ses PV, le boss se fissure, s'assombrit et rayonne de rouge (purement visuel) */
+function bxPhase(F, A, e, i, n) {
+  if (!e.mech || i !== F.bossIdx || !e.alive) return;
+  const ph = e.hp <= e.hpMax * 0.25 ? 3 : e.hp <= e.hpMax * 0.5 ? 2 : 1; const cur = +(n.dataset.bxph || 1); if (ph <= cur) return; n.dataset.bxph = ph;
+  const sp = axBody(n); if (!sp || !axOn()) return;
+  let ov = n.querySelector(".bxph"); if (!ov) { ov = document.createElement("span"); ov.className = "bxph"; ov.innerHTML = `<i class="au"></i><i class="cr"></i>`; ov.style.setProperty("--m", `url("${sp.src || ""}")`); sp.insertAdjacentElement("afterend", ov); }
+  n.classList.toggle("bxp2", ph === 2); n.classList.toggle("bxp3", ph === 3);
+  if (!axFull()) return;
+  const d = document.createElement("div"); d.className = "axbanner warn bxphase"; d.innerHTML = `<div class="k">${h(e.name)} · ${ph === 3 ? "25" : "50"} %</div><div class="n">Phase ${ph}</div>`; A.fxl.appendChild(d); axLater(d, 1800);
+  const p = axPt(A, n); const fl = axMk(A, "flashw", p.x, p.y); axLater(fl, 250); if (ph === 3 && sp.animate) sp.animate([{ transform: "translateX(-2px)" }, { transform: "translateX(2px)" }], { duration: 70, iterations: 24, direction: "alternate" });
+}
+/* mort du boss : écran blanc, il bascule lourdement, pluie de kamas et d'étincelles, « Vaincu ! » */
+function bxDeath(A, n, e) {
+  if (!axFull()) return false; const b = axBody(n); if (!b || !b.animate) return false; const p = axPt(A, n, 0.5), f = axFoot(A, n);
+  const w = axMk(A, "sg whiteout", 0, 0); w.animate([{ opacity: 0 }, { opacity: 0.9, offset: 0.2 }, { opacity: 0 }], { duration: 500, fill: "forwards" }); axLater(w, 520);
+  b.animate([{ transform: "none" }, { transform: "translateY(-30px) rotate(-10deg)", offset: 0.25 }, { transform: "translate(20px,10px) rotate(80deg)", offset: 0.7 }, { transform: "translate(20px,30px) rotate(90deg)", opacity: 0 }], { duration: 1100, easing: "ease-in", fill: "forwards" });
+  setTimeout(() => { if (!n.isConnected) return; pulse(A.el, "shake2"); for (let i = 0; i < 18; i++) { const c = axMk(A, "coin", p.x + axRnd(-10, 10), p.y); c.animate([{ transform: "translate(-50%,-50%)" }, { transform: `translate(calc(-50% + ${axRnd(-110, 110)}px),calc(-50% + ${axRnd(-120, -40)}px))`, offset: 0.45 }, { transform: `translate(calc(-50% + ${axRnd(-130, 130)}px),calc(-50% + ${f.y - p.y}px))`, opacity: 0.3 }], { duration: axRnd(900, 1300), easing: "ease-in", delay: i * 30, fill: "both" }); axLater(c, 1400 + i * 30); const s = axMk(A, "bx b-sparkle", p.x + axRnd(-50, 50), p.y + axRnd(-50, 40)); s.style.animationDelay = axRnd(0, 600) + "ms"; axLater(s, 1400); }
+    const d = document.createElement("div"); d.className = "axbanner bxwin"; d.innerHTML = `<div class="k">${h(e.name)}</div><div class="n">Vaincu !</div>`; A.fxl.appendChild(d); axLater(d, 2400); }, 650);
+  setTimeout(() => { if (n.dataset.ko === "1") { n.classList.add("dead"); b.getAnimations().forEach((x) => { if (!(x instanceof CSSAnimation)) x.cancel(); }); } }, 1150);
+  return true;
+}
 function axGroup(F, A, g) {
   if (ui.arena !== A) return;
   const cast = g.find((f) => f.k === "cast"), sp = axSpd();
@@ -1764,6 +2055,12 @@ function axGroup(F, A, g) {
   const el = hits.length ? hits[0].el || "n" : g.some((f) => f.k === "heal") ? "h" : "n";
   if (def && sn) axSpellTag(A, sn, def.name, el);
   if (src && src.side === "c" && !src.summon && sgPlay(F, A, def, src, sn, hits, rest, el)) return; // sort signature : animation unique
+  const go = (hs, rs) => axPlain(F, A, src, sn, hs || hits, rs || rest, el, def, sp);
+  if (src && src.side === "m" && src.mech && sn && axFull() && bxBossGroup(F, A, g, cast, src, sn, hits, rest, el, go)) return; // boss mis en scène
+  go();
+}
+/* attaque ordinaire : lancer, voyage, puis impacts */
+function axPlain(F, A, src, sn, hits, rest, el, def, sp) {
   const tg = [...new Set(hits.map((f) => f.t))].filter((t) => A.nodes[t]);
   let when = () => 0;
   if (sn && src && tg.length === 1) { const d = axSingle(A, src, sn, A.nodes[tg[0]], el, def, sp); when = () => d; }
@@ -1771,7 +2068,7 @@ function axGroup(F, A, g) {
   else if (sn) pulse(sn, "act");
   const late = tg.length ? when({ t: tg[0] }) : 0;
   hits.forEach((f) => setTimeout(() => axEvent(F, A, f), when(f)));
-  rest.forEach((f) => setTimeout(() => axEvent(F, A, f), f.k === "hit" ? late : Math.min(late, 200 * sp)));
+  rest.forEach((f) => setTimeout(() => { if (!(f.k === "hit" && bxReact(F, A, f))) axEvent(F, A, f); }, f.k === "hit" ? late : Math.min(late, 200 * sp)));
 }
 /* chute d'un monstre (fumée, kamas) ; tombe d'un héros */
 function axDeath(A, n, e) {
@@ -1780,6 +2077,7 @@ function axDeath(A, n, e) {
   setTimeout(() => { if (!n.isConnected || n.dataset.ko !== "1") return;
     const b = axBody(n), p = axPt(A, n, 0.7);
     if (e.side === "m") {
+      if (e.boss && bxDeath(A, n, e)) return;
       if (b && b.animate) b.animate([{ transform: "none" }, { transform: "scale(1.12,.72) translateY(12%)", offset: 0.3 }, { transform: "scale(.6,.2) translateY(60%)", opacity: 0 }], { duration: 420, easing: "ease-in", fill: "forwards" });
       axPuff(A, p.x, p.y, "rgba(210,210,200,.75)", axFull() ? 7 : 4);
       if (axFull()) for (let i = 0; i < 4; i++) { const c = axMk(A, "coin", p.x, p.y), dx = axRnd(-40, 40);
@@ -1826,6 +2124,7 @@ function axUpdateEnt(F, A, e, i, n) {
   n.classList.toggle("frozen", on && e.stun > 0);
   n.classList.toggle("golden", on && e.gold > 0);
   n.classList.toggle("dzon", on && e.side === "c" && F.ents.some((m) => m.alive && m.charging));
+  if (i === F.bossIdx && e.boss) { bxPhase(F, A, e, i, n); if (e.mech && e.mech.includes("glyphes")) bxGlyph(F, A, e, n); const sk = on && axFull() && e.skinEl ? e.skinEl : ""; if ((n.dataset.skin || "") !== sk) { n.dataset.skin = sk; n.classList.toggle("bxskin", !!sk); n.style.setProperty("--hue", { f: "-30deg", e: "190deg", t: "40deg", a: "100deg" }[sk] || "0deg"); } }
   axPassive(F, A, e, i, n);
 }
 function axVictory(F, A) {
@@ -2565,7 +2864,7 @@ function spTips(c, P) {
   const top = defs.filter((sp, i) => sp && ATK_KINDS.includes(kinds[i])).sort((a, b) => (cnt[b.id] || 0) - (cnt[a.id] || 0))[0];
   // 1) attaques jamais choisies
   const idle = eq.map((x, i) => i).filter((i) => defs[i] && ATK_KINDS.includes(kinds[i]) && !P.casted.has(eq[i].id) && (eq[i].cond || "always") === "always");
-  if (idle.length && top && P.casted.has(top.id)) tips.push({ ico: defs[idle[0]], txt: `${idle.map((i) => `<b>${h(defs[i].name)}</b>`).join(", ")} ${idle.length > 1 ? "ne sont" : "n'est"} jamais choisi${idle.length > 1 ? "s" : ""} : ${h(top.name)} fait plus de dégâts par PA. Échange ${idle.length > 1 ? "l'un d'eux" : "ce sort"} contre un sort plus utile.`, btn: "Voir", act: `data-act="spsel" data-i="${idle[0]}"` });
+  if (idle.length && top && P.casted.has(top.id)) tips.push({ ico: defs[idle[0]], txt: `${idle.map((i) => `<b>${h(defs[i].name)}</b>`).join(", ")} ${idle.length > 1 ? "ne sont" : "n'est"} jamais choisi${idle.length > 1 ? "s" : ""} : ${h(top.name)} est plus utile ici. Échange ${idle.length > 1 ? "l'un d'eux" : "ce sort"} contre un sort plus utile.`, btn: "Voir", act: `data-act="spsel" data-i="${idle[0]}"` });
   // 2) sorts bloqués par leur condition
   const SAFE = ["self_low", "ally_low", "ally_shield", "no_summon", "always"];
   eq.forEach((x, i) => { if (!defs[i] || P.casted.has(x.id) || SAFE.includes(x.cond || "always")) return; if (x.cond === "boss" && P.mode !== "boss") return;
@@ -2669,7 +2968,7 @@ function charSpellsView(c) {
   <div class="spgrid">
     <div class="panel spbarp"><div class="phead"><h2>Barre de sorts</h2><span class="muted xs">${eq.length}/${N}${N < 8 ? ` · ${N === 6 ? "7e au niv. 50" : "8e au niv. 100"}` : ""}</span><span class="grow"></span>${ui.spUndo && ui.spUndo.cid === c.id ? `<button class="btn sm" data-act="spundo">↶ Annuler</button>` : ""}<button class="btn sm" data-act="spopt" data-tip="Essaie tous les ordres des sorts de soutien et garde celui qui fait le plus de dégâts dans l'aperçu">✨ Ranger au mieux</button></div>
       <div class="pad stack" style="gap:8px"><div class="spbar">${slots}</div>
-      <p class="xs muted">En combat, le héros lance d'abord ses invocations, protections et soins (de gauche à droite, si leur condition est remplie), puis l'attaque qui fait le plus de dégâts par PA.${canHover ? " Glisse un sort pour changer sa place." : ""}</p></div></div>
+      <p class="xs muted">En combat, le héros lance d'abord ses invocations, protections et soins (de gauche à droite, si leur condition est remplie), puis il prépare ses attaques pour tout le tour : zone face à un groupe, gros coup sur le boss, élément que la cible résiste le moins, coup de grâce sur un monstre presque mort.${canHover ? " Glisse un sort pour changer sa place." : ""}</p></div></div>
     <div class="panel spdetp"><div class="pad">${spDetailHtml(c)}</div></div>
     <div class="panel spprevp">${spPreviewHtml(c)}</div>
     <div class="panel spgrimp"><div class="phead"><h2>Grimoire</h2><span class="spchips">${[["all", "Tous"], ["atk", "Dégâts"], ["sup", "Soutien"]].map(([k, n]) => `<button class="spc ${F === k ? "on" : ""}" data-act="spfilt" data-k="${k}">${n}</button>`).join("")}</span></div>
@@ -2923,16 +3222,16 @@ function toolHtml(id) {
 }
 /* 0.1.10.1 : protecteur de ressources (bandeau Métiers, Accueil et combat) */
 function protBar() {
-  const P = E.protActive(S); const B = S.protBoost && S.protBoost.until > Date.now() ? S.protBoost : null;
+  const P = E.protActive(S); const B = S.protBoost && S.protBoost.until > E.now() ? S.protBoost : null;
   let out = "";
   if (P) { const err = P.fighting ? null : E.protCanFight(S); const M = MONSTERS[P.mon];
-    out += `<div class="awaitbar" style="margin:0">${im(imgM(P.mon), "ico sm", M.name)} <span class="grow"><b>${h(E.PROT_TITLE[P.job])}</b> : ${h(M.name)} garde le ${h(P.res)}. ${P.fighting ? "Combat en cours." : P.go ? "L'équipe l'affrontera au prochain combat." : `Encore ${dur((P.until - Date.now()) / 1000)}.`}</span>${P.fighting || P.go ? "" : `<button class="btn sm primary" data-act="protgo" ${err ? `disabled data-tip="${h(err)}"` : ""}>Combattre</button>`}</div>`; }
-  if (B) out += `<div class="awaitbar" style="margin:0">${G("sparkle")} Protecteur vaincu : récolte de <b>${h(B.res)}</b> ×2 encore ${dur((B.until - Date.now()) / 1000)}</div>`;
+    out += `<div class="awaitbar" style="margin:0">${im(imgM(P.mon), "ico sm", M.name)} <span class="grow"><b>${h(E.PROT_TITLE[P.job])}</b> : ${h(M.name)} garde le ${h(P.res)}. ${P.fighting ? "Combat en cours." : P.go ? "L'équipe l'affrontera au prochain combat." : `Encore ${dur((P.until - E.now()) / 1000)}.`}</span>${P.fighting || P.go ? "" : `<button class="btn sm primary" data-act="protgo" ${err ? `disabled data-tip="${h(err)}"` : ""}>Combattre</button>`}</div>`; }
+  if (B) out += `<div class="awaitbar" style="margin:0">${G("sparkle")} Protecteur vaincu : récolte de <b>${h(B.res)}</b> ×2 encore ${dur((B.until - E.now()) / 1000)}</div>`;
   return out;
 }
 function recolteHtml() {
   const workers = S.chars.filter((c) => c.job);
-  const fil = S.filon && S.filon.until > Date.now() ? S.filon : null;
+  const fil = S.filon && S.filon.until > E.now() ? S.filon : null;
   const jobs = Object.entries(GATHER_JOBS).map(([id, J]) => { const s = S.jobs[id]; const ws = workers.filter((c) => c.job.job === id);
     const nextRes = J.items.find(([, l]) => l > s.lvl);
     return `<div class="panel"><div class="phead"><div class="row">${im(jobImg(id), "joblogo", J.name)}<div><h2>${J.name}</h2><span class="xs muted">${ws.length ? ws.map((c) => h(c.name)).join(", ") + " récolte" + (ws.length > 1 ? "nt" : "") : "personne ne récolte"}</span></div></div><span class="lvlpill">niv. ${s.lvl}</span></div>
@@ -2945,7 +3244,7 @@ function recolteHtml() {
       </div></div>`; }).join("");
   return `<p class="note">Un héros fait une seule activité : chasser avec l'équipe ou récolter la ressource de son choix. 1 % de chances de trouvaille (×5, parfois un ${h(E.RARE_COMPONENT)}). De temps en temps, un filon rare double le rendement d'une ressource pendant 10 minutes, et un protecteur de ressources peut surgir : battez-le avec l'équipe pour doubler la récolte 20 minutes.</p>
     ${protBar()}
-    ${fil ? `<div class="awaitbar" style="margin:0">${G("sparkle")} Filon de <b>${h(fil.res)}</b> : rendement ×2 encore ${dur((fil.until - Date.now()) / 1000)}</div>` : ""}
+    ${fil ? `<div class="awaitbar" style="margin:0">${G("sparkle")} Filon de <b>${h(fil.res)}</b> : rendement ×2 encore ${dur((fil.until - E.now()) / 1000)}</div>` : ""}
     <section class="panel"><div class="phead"><h2>Vos héros</h2></div><div class="list">${S.chars.map((c) => `<div class="li">${head(c)}<span class="grow"><span class="name">${h(c.name)}</span> <span class="xs muted">niv. ${c.lvl}</span><br><span class="xs">${c.job ? `${IC("pioche")} ${h(GATHER_JOBS[c.job.job].name)} : ${h(c.job.res)}` : c.inTeam ? IC("combat") + " Chasse avec l'équipe" : restLabel(c)}</span></span>
       ${c.job ? `<button class="btn sm" data-act="gathersheet" data-cid="${c.id}">Changer</button><button class="btn sm" data-act="unjob" data-id="${c.id}">Rappeler</button>` : `<button class="btn sm primary" data-act="gathersheet" data-cid="${c.id}">${IC("pioche")} Récolter</button>`}</div>`).join("")}</div></section>
     <div class="grid2">${jobs}</div>`;
@@ -3405,6 +3704,7 @@ function closeCele() { const box = $("#cele"); if (!box) return; const n = box.f
 function bossIntro(F) {
   const b = F.ents[F.bossIdx]; const arena = $("#arena"); if (!b || !arena) return;
   ui.bossIntro = F.id;
+  if (ui.arena && ui.arena.view === "scene" && axFull() && !S.settings.reduced && bxIntro(F, ui.arena)) return;
   const d = document.createElement("div"); d.className = "bossintro" + (b.legend ? " legend" : "") + (S.settings.reduced ? " still" : "");
   d.innerHTML = `<div class="bi-k">${F.stasis > 1 ? `Stasis ${F.stasis} · ` : ""}${b.legend ? "Boss légendaire" : "Boss"}</div><div class="bi-n">${h(b.name)}</div><div class="bi-m">${(b.mech || []).map((m) => `<span>${G("warn")} ${h(E.BOSS_MECHS[m].name)}</span>`).join("")}</div>`;
   arena.appendChild(d); setTimeout(() => d.remove(), 2600);
@@ -3695,9 +3995,9 @@ document.addEventListener("click", (ev) => {
     case "askrestore": ui.confirm = "restore" + d.i; if (S) optionsSheet(); else renderStart(); return;
     case "cancelrestore": ui.confirm = null; if (S) optionsSheet(); else renderStart(); return;
     case "restorecopy": restoreCopy(+d.i); return;
-    case "frompublic": { try { const txt = localStorage.getItem("dofousxen-save"); S = E.deserialize(txt); ui.cid = S.chars[0].id; setTheme(S.settings.theme || "dark"); dirty = true; saveNow(); ui.tab = "home"; render(); toast("Partie du jeu public copiée dans la version de test."); } catch (e) { toast("Aucune partie du jeu public à copier."); } return; }
+    case "frompublic": { try { const txt = SV.store().get("dofousxen-save"); S = E.deserialize(txt); ui.cid = S.chars[0].id; setTheme(S.settings.theme || "dark"); dirty = true; saveNow(); ui.tab = "home"; render(); toast("Partie du jeu public copiée dans la version de test."); } catch (e) { toast("Aucune partie du jeu public à copier."); } return; }
     case "cancelreset": ui.confirm = null; optionsSheet(); return;
-    case "reset": if (S) pushCopy(E.serialize(S), "avant", S); S = null; ui.confirm = null; closeSheet(); try { localStorage.removeItem(LS_KEY); } catch (e) {} render(); return;
+    case "reset": if (S) pushCopy(E.serialize(S), "avant", S); S = null; ui.confirm = null; closeSheet(); SV.remove(); render(); return;
     default: return;
   }
   dirty = true; render();
@@ -3763,55 +4063,30 @@ document.addEventListener("input", (ev) => {
 
 /* ---------- sauvegarde ---------- */
 let dirty = false, lastSaveOk = 0;
+/* La lecture et l'écriture de la partie sont dans js/save.js (support interchangeable : navigateur aujourd'hui, serveur demain). */
+SV.init({ key: LS_KEY, version: GAME_VERSION, engine: E });
 function saveNow(manual) {
-  if (!S) return; S.savedAt = Date.now(); S.lastTick = Date.now();
-  try { const txt = E.serialize(S); localStorage.setItem(LS_KEY, txt); lastSaveOk = Date.now(); dirty = false; if (Date.now() - lastCopy() > COPY_EVERY) pushCopy(txt, "auto", S); if (manual) toast("Partie sauvegardée."); }
-  catch (e) { if (manual) toast("Impossible de sauvegarder dans ce navigateur."); }
+  if (!S) return; S.savedAt = E.now(); S.lastTick = E.now();
+  let ok = false; try { ok = SV.write(E.serialize(S), S); } catch (e) {}
+  if (ok) { lastSaveOk = Date.now(); dirty = false; if (manual) toast("Partie sauvegardée."); }
+  else if (manual) toast("Impossible de sauvegarder dans ce navigateur.");
 }
-/* Copies de secours, à côté de la sauvegarde : 3 copies tournantes (une toutes les 10 min de jeu),
-   une avant chaque mise à jour du jeu et une avant chaque restauration. Si la sauvegarde est illisible, la plus récente prend le relais. */
-const COPY_KEY = LS_KEY + "-copies", VER_KEY = LS_KEY + "-version", COPY_EVERY = 10 * 60 * 1000, COPY_MAX = { auto: 3, maj: 1, avant: 1 };
-let restoredCopy = null;
-function readCopies() { try { const a = JSON.parse(localStorage.getItem(COPY_KEY) || "[]"); return Array.isArray(a) ? a.filter((c) => c && typeof c.txt === "string") : []; } catch (e) { return []; } }
-function writeCopies(a) {
-  a.sort((x, y) => y.t - x.t);
-  while (a.length) { try { localStorage.setItem(COPY_KEY, JSON.stringify(a)); return; } catch (e) { a.pop(); } } // place insuffisante : on lâche la plus ancienne
-  try { localStorage.removeItem(COPY_KEY); } catch (e) {}
-}
-function pushCopy(txt, why, st, v) {
-  if (!txt) return;
-  const meta = st && st.chars ? { lvl: Math.max(...st.chars.map((c) => c.lvl || 1)), n: st.chars.length } : {};
-  const a = readCopies(), same = a.filter((c) => c.why === why).sort((x, y) => y.t - x.t).slice(0, COPY_MAX[why] - 1);
-  writeCopies([Object.assign({ t: Date.now(), why, v: v || GAME_VERSION, txt }, meta), ...same, ...a.filter((c) => c.why !== why)]);
-}
-const lastCopy = () => Math.max(0, ...readCopies().filter((c) => c.why === "auto").map((c) => c.t));
+const readCopies = () => SV.copies(), pushCopy = (txt, why, st, v) => SV.pushCopy(txt, why, st, v);
+let restoredCopy = null, transferred = false;
 /* Déménagement de l'adresse du jeu : l'ancienne adresse renvoie ici avec la sauvegarde dans l'adresse (#transfert=…).
    On ne la reprend que si ce navigateur n'a encore aucune partie ici, puis on retire le texte de l'adresse. */
-function takeTransfer() {
-  const m = /^#transfert=(.+)$/.exec(location.hash || ""); if (!m) return;
+function transferText() {
+  const m = /^#transfert=(.+)$/.exec(location.hash || ""); if (!m) return null;
   try { history.replaceState(null, "", location.pathname + location.search); } catch (e) {}
-  try {
-    if (localStorage.getItem(LS_KEY)) return;
-    const txt = decodeURIComponent(escape(atob(decodeURIComponent(m[1])))); E.deserialize(txt);
-    localStorage.setItem(LS_KEY, txt); transferred = true;
-  } catch (e) {}
+  try { return decodeURIComponent(escape(atob(decodeURIComponent(m[1])))); } catch (e) { return null; }
 }
-let transferred = false;
 function loadSave() {
-  takeTransfer();
-  let raw = null;
-  try { raw = localStorage.getItem(LS_KEY); if (raw) return E.deserialize(raw); } catch (e) {}
-  if (!raw) return null;
-  for (const c of readCopies()) { try { const st = E.deserialize(c.txt); restoredCopy = c; return st; } catch (e) {} } // sauvegarde illisible : copie la plus récente
-  return null;
+  const r = SV.load(transferText());
+  restoredCopy = r.restored; transferred = r.transferred;
+  return r.state;
 }
 /* Avant de lancer une nouvelle version du jeu, on garde la partie telle qu'elle était. */
-function copyBeforeUpdate(st) {
-  try {
-    const prev = localStorage.getItem(VER_KEY);
-    if (prev !== GAME_VERSION) { const raw = localStorage.getItem(LS_KEY); if (raw && !restoredCopy) pushCopy(raw, "maj", st, prev || "précédente"); localStorage.setItem(VER_KEY, GAME_VERSION); }
-  } catch (e) {}
-}
+function copyBeforeUpdate(st) { SV.beforeUpdate(st, restoredCopy); }
 function restoreCopy(i) {
   const c = readCopies()[i]; if (!c) return;
   let N; try { N = E.deserialize(c.txt); } catch (e) { toast("Cette copie est illisible."); return; }
@@ -3849,7 +4124,7 @@ function loop() {
   if (S) {
     if (BETA && E.grantPioneer(S)) { dirty = true; toast("Merci de tester Idlus ! Titre « Pionnier d'Idlus » et ornement « Pousse du Pionnier » débloqués (onglet Héros).", "rare"); }
     S.manualLive = document.visibilityState === "visible" && ui.tab === "combat";
-    E.tick(S, dt * (BETA ? testSpeed : 1)); S.lastTick = Date.now();
+    E.tick(S, dt * (BETA ? testSpeed : 1)); S.lastTick = E.now();
     sinceSave += dt; sinceView += dt;
     if (E.events.length) { E.events.splice(0).forEach((ev) => { if (ev.kind === "cele") { celebrate(ev); return; }
         if (ev.kind === "loss") { if (notifOn("loss")) { toast(ev.txt, "loss"); notify("loss", "Défaite", ev.txt); } return; }
@@ -3870,7 +4145,7 @@ function loop() {
     if (sinceSave > 15000) { sinceSave = 0; saveNow(); }
     // ressources récemment obtenues + liste de courses prête
     sinceRes += dt;
-    if (sinceRes > 2500) { sinceRes = 0; const now = Date.now(); updNavLive();
+    if (sinceRes > 2500) { sinceRes = 0; const now = E.now(); updNavLive();
       for (const n in S.res) { if ((S.res[n] || 0) > (lastRes[n] || 0)) S.resT[n] = now; } lastRes = Object.assign({}, S.res);
       S.shop.forEach((e) => { const ing = shopIng(e); const ok = ing.length && ing.every(([r, q]) => (S.res[r] || 0) >= q); if (ok && !e.ok) { toast(`Tout est réuni pour : ${shopName(e)} !`, "rare"); notify("shop", "Liste de courses prête", `Tout est réuni pour : ${shopName(e)}`); } e.ok = !!ok; });
       checkPins(); if (!$("#sheet").innerHTML) renderObjs();
@@ -3881,7 +4156,7 @@ function loop() {
 }
 document.addEventListener("visibilitychange", () => {
   if (document.visibilityState === "hidden") saveNow();
-  else if (S) { const gap = (Date.now() - (S.lastTick || Date.now())) / 1000; if (gap > 60) { const r = E.catchUp(S, gap); if (r && (r.wins || Object.keys(r.res).length || (r.fmPlans && r.fmPlans.length))) offlineSheet(r); } last = performance.now(); }
+  else if (S) { const gap = (E.now() - (S.lastTick || E.now())) / 1000; if (gap > 60) { const r = E.catchUp(S, gap); if (r && (r.wins || Object.keys(r.res).length || (r.fmPlans && r.fmPlans.length))) offlineSheet(r); } last = performance.now(); }
 });
 window.addEventListener("pagehide", () => saveNow());
 
@@ -3893,7 +4168,7 @@ function start() {
   if (S) {
     setTheme(S.settings.theme || "dark");
     ui.cid = S.chars[0].id;
-    const gap = (Date.now() - (S.lastTick || Date.now())) / 1000;
+    const gap = (E.now() - (S.lastTick || E.now())) / 1000;
     const r = gap > 60 ? E.catchUp(S, gap) : null;
     render();
     if (S.migration) { migrationSheet(S.migration); S.migration = null; }

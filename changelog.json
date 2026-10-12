@@ -1,6 +1,47 @@
 {
-  "version": "0.1.13.1",
+  "version": "0.1.14.1",
   "versions": [
+    {
+      "v": "0.1.14.1",
+      "name": "Héros plus malin",
+      "items": [
+        "En combat, le héros prépare tout son tour au lieu de lancer toujours la même attaque : sort de zone face à un groupe, gros coup sur le boss, élément auquel la cible résiste le moins, coup de grâce sur un monstre presque mort, et plus de dégâts perdus sur un monstre déjà vaincu",
+        "Il utilise mieux tous ses PA en combinant ses sorts, et lance donc des attaques qui ne servaient jamais ; ses invocations, protections et soins passent toujours en premier, dans l'ordre de la barre et selon leurs conditions"
+      ]
+    },
+    {
+      "v": "0.1.14",
+      "name": "Boss mis en scène",
+      "items": [
+        "Mise en scène des boss (mode d'animation « Complètes ») : chacune des 22 mécaniques de boss a maintenant sa propre scène dans l'arène au lieu d'un simple bandeau : Rage (vapeur et veines), Carapace (plaques qui se referment en dôme), Attaque dévastatrice (le boss aspire l'air puis lâche une onde de choc), Point faible (cible qui se fissure au coup suivant, ×1,5 affiché), Séisme (pics de pierre sous la première ligne), Riposte (parade puis contre-coup pendant le tour du héros), Reflet (double miroir et éclat au coup reçu), Miasmes (brume qui traverse l'arène), Dévoreur (le serviteur est avalé), Brise-garde (les boucliers volent en éclats), Putréfaction, Change-peau (l'ancienne peau se détache, la nouvelle teinte reste), Condamnation (crâne à compte à rebours relié au boss, puis guillotine), Mutisme (lettres qui tombent, cadenas), Terreur (ombre géante), Frénésie, Totems (dôme doré), Âmes liées (fil d'âme et dégâts qui filent vers le serviteur), Immortel (le boss part en cendres et renaît), Compte à rebours (vignette rouge et chiffre dès le tour 15)",
+        "Les 20 boss à signature ont leur scène : Distorsion du temps, Fournaise et givre, Tapis roulant, Grand banquet, Inventions (plan bleu et bombe), Marée, Sacrifice, Dédoublement, Regard pétrifiant, Aspiration, Toucher doré, Larcin, Charge du taureau, Quatre humeurs, À l'abordage, Glyphes pair et impair (glyphe permanent sous Kimbo, bleu ou rouge selon le tour, ×1,4 et ×0,7 affichés), Horloge (engrenages, pendule et compteur de tours), Racines, Glace éternelle, Appétit d'Ougah",
+        "Sorts signature de boss : une attaque sur trois environ, dix boss emblématiques lancent leur sort à eux, purement visuel et sans changer les dégâts : Bouftou Royal (Boule de laine), Batofu (Nuée de Tofus), Blop Coco Royal (Rebond gluant), Craqueleur Légendaire (Avalanche), Le Chouque (Barriques), Moon (Tambour de Moon), Dragon Cochon (Ronds de fumée), Tofu Royal (Plongeon royal), Crocabulia (Battement d'ailes), Shogun Tofugawa (Trait d'encre)",
+        "Entrée du boss : en arrivant dans sa salle, son portrait s'affiche en grand avec sa stasis, son niveau et ses mécaniques, il rugit, puis saute en place dans un nuage de poussière avant « Combat ! »",
+        "Phases de boss : à 50 % de ses PV, bandeau « Phase 2 », le boss se fissure, s'assombrit et une aura rouge pulse derrière lui ; à 25 %, « Phase 3 », les fissures s'embrasent et il tremble sans arrêt (purement visuel)",
+        "Mort du boss : écran qui blanchit, le boss bascule lourdement et s'efface dans une pluie de kamas et d'étincelles, « Vaincu ! » à son nom",
+        "En mode « Sobres », les boss gardent leur simple bandeau comme avant ; les familles de monstres et les poses des héros arriveront dans un prochain lot"
+      ]
+    },
+    {
+      "v": "0.1.13.3",
+      "name": "Fondations du multijoueur",
+      "items": [
+        "Rien ne change pour vous en jeu : cette version prépare le terrain du multijoueur, en coulisses",
+        "La sauvegarde a maintenant son propre module : elle pourra passer en ligne, sur un serveur, sans toucher au reste du jeu (copies de secours et reprise de partie inchangées)",
+        "Le jeu lit l'heure à un seul endroit : plus tard, le serveur pourra imposer la sienne pour éviter la triche en avançant l'horloge de l'appareil",
+        "Tout le hasard du jeu passe par le même tirage : une partie peut être rejouée à l'identique, ce qui servira au serveur pour vérifier les combats (Kolizéum)",
+        "La liste officielle des 74 actions d'un joueur (équiper, chasser, forger…) est écrite : c'est ce que le jeu enverra au serveur"
+      ]
+    },
+    {
+      "v": "0.1.13.2",
+      "name": "Classes et donjons",
+      "items": [
+        "Laboratoire du Tynril : le Tynril Ahuri ne résiste plus à moitié au Feu, à l'Eau et à l'Air en plus de ses Quatre humeurs, et les monstres du donjon sont un peu moins forts",
+        "Cache de Kankreblath : Kankreblath ne frappe plus toute l'équipe à chaque tour, et les monstres du donjon sont un peu moins forts ; un boss n'a plus qu'un seul moyen de se soigner",
+        "Classes plus proches les unes des autres : Xélor, Huppermage, Enutrof et Eniripsa plus forts à haut niveau, Éliotrope plus fort vers le niveau 50 ; Écaflip et Roublard moins forts vers le niveau 50, Ouginak et Éliotrope moins forts à haut niveau"
+      ]
+    },
     {
       "v": "0.1.13.1",
       "name": "Dofus à leur place",
