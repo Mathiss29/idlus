@@ -3,6 +3,7 @@ Zone Incarnam: Route des âmes[1-5] 4m, Champs[1-7] 4m, Lac[2-8] 3m, Pâturages[
 Zone Astrub: Cité d'Astrub[11-15] 6m, Souterrains d'Astrub[11-15] 4m, Prairies d'Astrub[16-20] 4m, Champs d'Astrub[16-20] 4m, Calanques d'Astrub[16-20] 4m, Tainéla[22-30] 4m, Forêt d'Astrub[22-30] 4m, Carrière d'Astrub[22-30] 4m, Égouts d'Astrub[22-30] 4m, Cimetière d'Astrub[32-40] 4m, Planque des Vilinsekts[32-40] 4m
 Zone Amakna: Campagne d'Amakna[16-20] 4m, Forêt d'Amakna[16-39] 4m, Coin des Bouftous[22-30] 4m, Coin des Boos[22-30] 4m, Cimetière[25-42] 6m, Champ des Ingalsse[32-40] 5m, Campement des Gobelins[32-40] 4m, Campement des Bworks[32-50] 5m, Plaine des Scarafeuilles[34-42] 4m, Bord de la forêt maléfique[35-43] 4m, Montagne des Craqueleurs[42-50] 9m, Cloaque d'Amakna[52-60] 4m, Péninsule des gelées[54-62] 3m, Pitons Rocheux des Craqueleurs[59-71] 6m, Dédale du Dark Vlad[142-150] 4m
 Zone Plaines de Cania: Baie de Cania[35-47] 6m, Plaine des Porkass[40-50] 4m, Champs de Cania[51-64] 4m, Lac de Cania[52-60] 4m, Massif de Cania[52-65] 4m, Plaines Rocheuses[59-70] 4m, Pics de Cania[82-90] 4m, Pénates du Corbac[102-110] 4m, Bibliothèque du Maître Corbac[102-110] 7m, Cirque de Cania[110-121] 4m, Landes de Cania[137-150] 4m, Dents de Pierre[150-160] 5m, Village des Kanigs[150-160] 5m
+Zone Île des Wabbits: Île de la Cawotte[40-54] 5m, Îlot de la Couronne[44-60] 4m, Îlot des Tombeaux[48-58] 2m, Îlot de Waldo[52-60] 2m, Laboratoires abandonnés[112-120] 5m
 Zone Landes de Sidimote: Désolation de Sidimote[62-70] 4m, Route des Roulottes[82-90] 4m, Hauts des Hurlements[92-100] 4m, Gisgoul[172-180] 5m, Caverne des Fungus[172-180] 4m, Domaine des Fungus[172-180] 4m
 Zone Montagne des Koalaks: Forêt de Kaliptus[60-88] 4m, Lacs enchantés[60-88] 4m, Canyon sauvage[70-98] 8m, Vallée de la Morh'Kitu[101-120] 5m, Cimetière primitif[101-120] 4m
 Zone Forêt des Abraknydes: Forêt Sombre[74-90] 3m
@@ -26,6 +27,8 @@ Donjon Crypte de Kardorim: boss Kardorim niv 10, clé Clef de la Crypte de Kardo
 Donjon Grange du Tournesol Affamé: boss Tournesol Affamé niv 20, clé Clef des Champs, salles 3
 Donjon Château Ensablé: boss Mob l'Éponge niv 20, clé Clef du Château Ensablé, salles 3
 Donjon Cour du Bouftou Royal: boss Bouftou Royal niv 30, clé Clef de la Cour du Bouftou Royal, salles 4
+Donjon Château du Wa Wabbit: boss Wa Wabbit niv 60, clé Clef du Château du Wa Wabbit, salles 5
+Donjon Terrier du Wa Wabbit: boss Wa Wobot niv 80, clé Clef du Terrier du Wa Wabbit, salles 5
 Donjon Cache de Kankreblath: boss Kankreblath niv 40, clé Clef de la Cache de Kankreblath, salles 4
 Donjon Donjon des Tofus: boss Batofu niv 40, clé Clef du Donjon des Tofus, salles 4
 Donjon Donjon des Squelettes: boss Chafer Rōnin niv 40, clé Clef du Donjon des Squelettes, salles 4
@@ -101,11 +104,12 @@ Donjon Trône de la Cour Sombre: boss Reine des Voleurs niv 220, clé Clef du Tr
 Donjon Œil de Vortex: boss Vortex niv 220, clé Clef de l'Œil de Vortex, salles 6
 Donjon Défi du Chalœil: boss Chalœil niv 220, clé Clef du Défi du Chalœil, salles 6
 Donjon Chambre de Tal Kasha: boss Tal Kasha niv 220, clé Clef de la Chambre de Tal Kasha, salles 6
-Récolte : {'paysan': 13, 'bucheron': 20, 'mineur': 16, 'alchimiste': 13, 'pecheur': 23} | sous-zones avec ressources : 95
-Ressources intermédiaires fabricables : 53
-Équipements : 186 lâchés par les monstres, 1771 craftables avec les ressources du jeu (1018 recettes simplifiées)
-Ingrédients qui débloqueraient le plus de crafts : [('Étoffe Mystérieuse', 57), ('Tourmaline', 47), ("Fragment d'anomalie", 35), ('Pépite', 34), ('Neurone de dragodinde', 25), ('Galet Solaire', 25), ('Galet rutilant', 23), ('Corne de volkorne', 22), ('Galet rayonnant', 20), ('Trame Dimensionnelle', 20), ('Ambre du Tynril', 18), ('Galet Lunaire', 16), ('Boostoplasme', 15), ('Galet cramoisi', 15), ('Pétale de Rose Obscure', 12)]
-Objets retenus : 1707 ; panoplies : 340
+Récolte : {'paysan': 13, 'bucheron': 20, 'mineur': 16, 'alchimiste': 13, 'pecheur': 23} | sous-zones avec ressources : 100
+Ressources intermédiaires fabricables : 54
+Équipements : 186 lâchés par les monstres, 1845 craftables avec les ressources du jeu (1069 recettes simplifiées)
+Ingrédients qui débloqueraient le plus de crafts : [('Étoffe Mystérieuse', 57), ('Tourmaline', 47), ('Pépite', 37), ("Fragment d'anomalie", 35), ('Neurone de dragodinde', 26), ('Galet rutilant', 25), ('Galet Solaire', 25), ('Corne de volkorne', 22), ('Galet cramoisi', 20), ('Galet rayonnant', 20), ('Trame Dimensionnelle', 20), ('Ambre du Tynril', 19), ('Galet Lunaire', 17), ('Boostoplasme', 15), ('Pétale de Rose Obscure', 12)]
+Objets retenus : 1780 ; panoplies : 351
+!! Clé Clef du Château du Wa Wabbit : ingrédients sans source dans le jeu : ['Morceau de clef du Matin Pewlant', 'Morceau de clef du Midi Wayonnant', 'Morceau de clef du Soiw Woulant']
 !! Clé Clef du Donjon des Squelettes : ingrédients sans source dans le jeu : ['Mâchoire du Chafer Draugr']
 !! Clé Clef des Pitons Rocheux des Craqueleurs : ingrédients sans source dans le jeu : ['Fragment de Pierre Polie']
 !! Clé Clef du labyrinthe du Dragon Cochon : ingrédients sans source dans le jeu : ['Deuxième partie de la clef du labyrinthe du Dragon Cochon', 'Première partie de la clef du labyrinthe du Dragon Cochon']
@@ -131,6 +135,6 @@ Sorts de classe : 418 icônes, 418 niveaux
 class_spells.json absent : kits de classe et invocations repris de js/gamedata.js
 Kits de classe : {'feca': 22, 'osa': 22, 'enu': 22, 'sram': 22, 'xelor': 22, 'eca': 22, 'eni': 22, 'iop': 22, 'cra': 22, 'sadi': 22, 'sacri': 22, 'panda': 22, 'roub': 22, 'zobal': 22, 'steam': 22, 'elio': 22, 'hupper': 22, 'ougi': 22, 'forge': 22}
 Invocations : 75
-Monstres avec sorts : 835/839
-gamedata.js : 1743 Ko, 839 monstres, 1683 ressources, 1707 objets
-Images : 0 nouvelles / 4360 au total
+Monstres avec sorts : 864/868
+gamedata.js : 1796 Ko, 868 monstres, 1731 ressources, 1780 objets
+Images : 0 nouvelles / 4498 au total
