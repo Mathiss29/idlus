@@ -14,8 +14,7 @@ const ui = {
 };
 /* La version de test (/beta/) a sa propre sauvegarde : elle ne touche jamais la partie du jeu public. */
 const BETA = /\/beta\//.test(location.pathname);
-const LS_KEY = BETA ? "dofousxen-save-beta" : "dofousxen-save";
-/* ---------- Notes de mise à jour (bandeau « mise à jour appliquée ») ---------- */const GAME_VERSION = "0.1.13";
+const LS_KEY = BETA ? "dofousxen-save-beta" : "dofousxen-save";/* ---------- Notes de mise à jour (bandeau « mise à jour appliquée ») ---------- */const GAME_VERSION = "0.1.13";
 const DISCORD = "https://discord.gg/9ApPgWjPUM", DISCORD_BUGS = "https://discord.gg/2xX6F9764Z"; // invitation qui ouvre directement le forum des bugs
 const CHANGELOG = [
   { v: "0.1.13", name: "Archimonstres et Dofus", items: [
@@ -27,7 +26,10 @@ const CHANGELOG = [
     "Un Dofus peut aussi tomber en butin du boss de son donjon : 1 chance sur 1 000 dès la stasis 5 (Ocre : 1 sur 5 000 sur tout boss de niveau 160 et plus dès la stasis 8). Une fois obtenu, une copie pour un autre héros se fabrique chez le Bricoleur avec de la Poussière de stasis",
     "Rapport d'absence : âmes capturées et pierres restantes ; 7 succès Archimonstres (titres « Chasseur d'âmes », « Porteur de Dofus », « Gardien des Dofus ») ; panneau de test : pierres, toutes les âmes, les 18 Dofus",
   ] },
-  { v: "0.1.12.2", name: "Nouvelle adresse", items: [
+  { v: "0.1.12.3", name: "L'équipement compte", items: [
+    "Les monstres sont plus forts à partir du niveau 30 : une équipe sans équipement perd presque tous ses combats de chasse, et en donjon elle échoue ou passe tout juste la stasis 1. Aux premiers niveaux, rien ne change",
+    "En chasse, les groupes comptent au moins 4 monstres dès les zones de niveau 25 ; les combats durent plus longtemps, mais chaque monstre donne plus d'XP, de butin et de kamas : une équipe bien équipée gagne autant par heure qu'avant",
+    "Paliers de donjon revus : bien équipé, une équipe vise la stasis 5 à 7 ; une équipe optimisée, la stasis 8 à 10" ] },  { v: "0.1.12.2", name: "Nouvelle adresse", items: [
     "Le jeu a une nouvelle adresse plus simple : idlus.github.io (la bêta : idlus.github.io/beta)",
     "L'ancienne adresse renvoie automatiquement vers la nouvelle et ta partie te suit : elle est reprise si ce navigateur n'a encore aucune partie à la nouvelle adresse" ] },
   { v: "0.1.12.1", name: "Identité du Phénix", items: [

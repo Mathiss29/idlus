@@ -5,11 +5,13 @@ Vos héros combattent automatiquement : à vous d'optimiser leur équipement, le
 
 **Jouer :** https://idlus.github.io/ (installable sur téléphone et PC)
 
-**Discord :** https://discord.gg/9ApPgWjPUM
-## 0.1.13 « Archimonstres et Dofus » (bêta)
+**Discord :** https://discord.gg/9ApPgWjPUM## 0.1.13 « Archimonstres et Dofus » (bêta)
 - **Album des archimonstres** (bouton « Âmes ») : les 205 archimonstres par zone ; une **Pierre d'âme** en sac capture l'âme d'un archimonstre vaincu (Bricoleur 25, premier passage des stasis, Bureau des primes). **Parfum de pistage** (×2, 2 h) et meuble **Autel des âmes** (×1,4).
 - **Éternelle moisson** : six paliers d'âmes par groupes de zones, récompenses à chaque palier, le **Dofus Ocre** (+1 PA) au bout.
 - **Les 18 Dofus** avec leurs vrais bonus, chacun par une quête (Quêtes › Dofus) ou en butin très rare du boss de son donjon (1/1 000 dès la stasis 5) ; copies pour les autres héros chez le Bricoleur (Poussière de stasis). Succès et titres.
+
+## 0.1.12.3 « L'équipement compte » (bêta)
+- Monstres plus forts dès le niveau 30 : sans équipement, une équipe perd en chasse et échoue ou passe tout juste la stasis 1 en donjon ; XP et butin par monstre en proportion, gains par heure inchangés pour une équipe bien équipée.
 ## 0.1.12.2 « Nouvelle adresse » (bêta)
 - Le jeu s'ouvre maintenant sur idlus.github.io ; l'ancienne adresse y renvoie et la partie du navigateur suit le joueur.
 
