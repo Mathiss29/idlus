@@ -28,6 +28,9 @@ const CHANGELOG = [
     "Un Dofus peut aussi tomber en butin du boss de son donjon : 1 chance sur 1 000 dès la stasis 5 (Ocre : 1 sur 5 000 sur tout boss de niveau 160 et plus dès la stasis 8). Une fois obtenu, une copie pour un autre héros se fabrique chez le Bricoleur avec de la Poussière de stasis",
     "Rapport d'absence : âmes capturées et pierres restantes ; 7 succès Archimonstres (titres « Chasseur d'âmes », « Porteur de Dofus », « Gardien des Dofus ») ; panneau de test : pierres, toutes les âmes, les 18 Dofus",
   ] },
+  { v: "0.1.12.4", name: "Sram et Crâ", items: [
+    "Sram : ses pièges frappent dès qu'ils sont posés, avec des dégâts à la hauteur de son niveau (avant : un petit poison lent, qui le rendait bien plus faible que les autres classes à partir du niveau 140)",
+    "Crâ : la Balise Tactique et la Balise de Survie restent des outils (vulnérabilité, puissance, soins) et ne frappent presque plus ; la Flèche Dévorante perd son énorme vol de vie et fait 30 % de dégâts en moins. Le Crâ était de loin la classe la plus forte à haut niveau" ] },
   { v: "0.1.12.3", name: "L'équipement compte", items: [
     "Les monstres sont plus forts à partir du niveau 30 : une équipe sans équipement perd presque tous ses combats de chasse, et en donjon elle échoue ou passe tout juste la stasis 1. Aux premiers niveaux, rien ne change",
     "En chasse, les groupes comptent au moins 4 monstres dès les zones de niveau 25 ; les combats durent plus longtemps, mais chaque monstre donne plus d'XP, de butin et de kamas : une équipe bien équipée gagne autant par heure qu'avant",
