@@ -1,0 +1,298 @@
+{
+ "areas": [
+  [
+   1,
+   "Île des Wabbits"
+  ]
+ ],
+ "dungeons": [
+  [
+   17,
+   "Terrier du Wa Wabbit",
+   538,
+   [
+    3460
+   ]
+  ],
+  [
+   52,
+   "Château du Wa Wabbit",
+   537,
+   [
+    180
+   ]
+  ]
+ ],
+ "subs": [
+  {
+   "id": 25,
+   "name": "Souterrains des Wabbits",
+   "area": 1,
+   "dungeon": false,
+   "monsters": [
+    [
+     182,
+     "Wabbit Gm",
+     80
+    ]
+   ]
+  },
+  {
+   "id": 161,
+   "name": "Île de la Cawotte",
+   "area": 1,
+   "dungeon": false,
+   "monsters": [
+    [
+     64,
+     "Wabbit",
+     44
+    ],
+    [
+     65,
+     "Black Wabbit",
+     46
+    ],
+    [
+     68,
+     "Black Tiwabbit",
+     42
+    ],
+    [
+     72,
+     "Tiwabbit Kiafin",
+     40
+    ],
+    [
+     96,
+     "Tiwabbit",
+     41
+    ]
+   ]
+  },
+  {
+   "id": 162,
+   "name": "Îlot de Waldo",
+   "area": 1,
+   "dungeon": false,
+   "monsters": [
+    [
+     97,
+     "Wo Wabbit",
+     52
+    ],
+    [
+     99,
+     "Grand Pa Wabbit",
+     52
+    ]
+   ]
+  },
+  {
+   "id": 163,
+   "name": "Îlot des Tombeaux",
+   "area": 1,
+   "dungeon": false,
+   "monsters": [
+    [
+     179,
+     "Wabbit Squelette",
+     48
+    ],
+    [
+     3469,
+     "Black Wabbit Squelette",
+     50
+    ]
+   ]
+  },
+  {
+   "id": 164,
+   "name": "Îlot de la Couronne",
+   "area": 1,
+   "dungeon": false,
+   "monsters": [
+    [
+     64,
+     "Wabbit",
+     44
+    ],
+    [
+     65,
+     "Black Wabbit",
+     46
+    ],
+    [
+     97,
+     "Wo Wabbit",
+     52
+    ],
+    [
+     99,
+     "Grand Pa Wabbit",
+     52
+    ]
+   ]
+  },
+  {
+   "id": 537,
+   "name": "Château du Wa Wabbit",
+   "area": 1,
+   "dungeon": true,
+   "monsters": [
+    [
+     64,
+     "Wabbit",
+     44
+    ],
+    [
+     65,
+     "Black Wabbit",
+     46
+    ],
+    [
+     68,
+     "Black Tiwabbit",
+     42
+    ],
+    [
+     72,
+     "Tiwabbit Kiafin",
+     40
+    ],
+    [
+     96,
+     "Tiwabbit",
+     41
+    ],
+    [
+     97,
+     "Wo Wabbit",
+     52
+    ],
+    [
+     99,
+     "Grand Pa Wabbit",
+     52
+    ]
+   ]
+  },
+  {
+   "id": 538,
+   "name": "Terrier du Wa Wabbit",
+   "area": 1,
+   "dungeon": true,
+   "monsters": [
+    [
+     181,
+     "Wobot",
+     72
+    ],
+    [
+     3461,
+     "Black Wo Wabbit",
+     72
+    ],
+    [
+     3462,
+     "Wobot Kiafin",
+     72
+    ],
+    [
+     3463,
+     "Blanc Pa Wabbit",
+     72
+    ],
+    [
+     3474,
+     "Tiwobot",
+     72
+    ]
+   ]
+  },
+  {
+   "id": 798,
+   "name": "Laboratoires abandonnés",
+   "area": 1,
+   "dungeon": false,
+   "monsters": [
+    [
+     3464,
+     "Wabbit Vampire",
+     112
+    ],
+    [
+     3465,
+     "Cawotman",
+     112
+    ],
+    [
+     3466,
+     "Wabbit Fluo",
+     112
+    ],
+    [
+     3467,
+     "Wabbit Céphale",
+     112
+    ],
+    [
+     3468,
+     "Wabbit Garou",
+     112
+    ]
+   ]
+  },
+  {
+   "id": 817,
+   "name": "Galeries abandonnées",
+   "area": 1,
+   "dungeon": false,
+   "monsters": [
+    [
+     3464,
+     "Wabbit Vampire",
+     112
+    ],
+    [
+     3465,
+     "Cawotman",
+     112
+    ],
+    [
+     3466,
+     "Wabbit Fluo",
+     112
+    ],
+    [
+     3467,
+     "Wabbit Céphale",
+     112
+    ],
+    [
+     3468,
+     "Wabbit Garou",
+     112
+    ]
+   ]
+  },
+  {
+   "id": 1153,
+   "name": "Invasion de l'Éveil - Île des Wabbits",
+   "area": 97,
+   "dungeon": false,
+   "monsters": [
+    [
+     97,
+     "Wo Wabbit",
+     52
+    ],
+    [
+     99,
+     "Grand Pa Wabbit",
+     52
+    ]
+   ]
+  }
+ ]
+}

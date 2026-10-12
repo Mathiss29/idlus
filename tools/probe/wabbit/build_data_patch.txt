@@ -1,0 +1,5 @@
+    {'id': 'wabbit', 'name': 'Île des Wabbits', 'desc': "L'île du Wa Wabbit, de ses Wabbits et de ses champs de Cawottes.", 'theme': 'meadow', 'requires': {'boss': 'cour_bouftou_royal'},
+     'subs': [(25, 'wab_souterrains_des_wa', 'cave'), (161, 'wab_ile_de_la_cawotte', 'meadow'), (162, 'wab_ilot_de_waldo', 'meadow'), (163, 'wab_ilot_des_tombeaux', 'meadow'), (164, 'wab_ilot_de_la_couronn', 'meadow'), (798, 'wab_laboratoires_aband', 'cave'), (817, 'wab_galeries_abandonne', 'cave'), (1153, 'wab_invasion_de_l_evei', 'meadow')]},
+
+    (538, 'wab_terrier_du_wa_wabb', 'wab_invasion_de_l_evei'),
+    (537, 'wab_chateau_du_wa_wabb', 'wab_invasion_de_l_evei'),
