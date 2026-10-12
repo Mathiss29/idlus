@@ -3,15 +3,18 @@
 Idle / autobattler inspiré de DOFUS, jouable dans le navigateur (PC et mobile).
 Vos héros combattent automatiquement : à vous d'optimiser leur équipement, leurs sorts et leurs stratégies.
 
-**Jouer :** https://mathiss29.github.io/idlus/ (installable sur téléphone et PC)
+**Jouer :** https://idlus.github.io/ (installable sur téléphone et PC)
 
 **Discord :** https://discord.gg/9ApPgWjPUM
-
 ## 0.1.13 « Archimonstres et Dofus » (bêta)
 - **Album des archimonstres** (bouton « Âmes ») : les 205 archimonstres par zone ; une **Pierre d'âme** en sac capture l'âme d'un archimonstre vaincu (Bricoleur 25, premier passage des stasis, Bureau des primes). **Parfum de pistage** (×2, 2 h) et meuble **Autel des âmes** (×1,4).
 - **Éternelle moisson** : six paliers d'âmes par groupes de zones, récompenses à chaque palier, le **Dofus Ocre** (+1 PA) au bout.
 - **Les 18 Dofus** avec leurs vrais bonus, chacun par une quête (Quêtes › Dofus) ou en butin très rare du boss de son donjon (1/1 000 dès la stasis 5) ; copies pour les autres héros chez le Bricoleur (Poussière de stasis). Succès et titres.
+## 0.1.12.2 « Nouvelle adresse » (bêta)
+- Le jeu s'ouvre maintenant sur idlus.github.io ; l'ancienne adresse y renvoie et la partie du navigateur suit le joueur.
 
+## 0.1.12.1 « Identité du Phénix » (bêta)
+- Un héros rené se reconnaît partout : cadre de feu animé sur sa carte, flammes derrière lui, nom en lettres de feu, foyer sous ses pieds en combat, médaillon dans les listes.
 ## 0.1.12 « Renaissance » (bêta)
 - Au niveau 200, un héros peut renaître (Équipe › Renaissance) : il repart au niveau 1 en gardant apparence, titres, ornements, Dofus, familier, monture et parchemins ; l'équipement va dans le sac. Chaque renaissance donne +30 % d'XP au héros et un Éveil au choix (8 Éveils communs en 3 rangs, Éveil de classe aux renaissances V et X) ; 10 renaissances au plus. Médaillon, auras, titres, ornement « Ailes du Phénix » et 3 succès.
 - Courbe d'XP : au-delà du niveau 100, l'XP demandée baisse progressivement (première montée 1 → 200 ≈ 250 h équipé au lieu de 1 400 h). Simulateur : `--renaissance N`.
