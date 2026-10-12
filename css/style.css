@@ -1783,7 +1783,8 @@ nav.subnav .navdot{position:static;display:inline-block;margin-left:2px}
 .renrow .pill{border:1px solid var(--line);border-radius:999px;padding:3px 10px;white-space:nowrap}
 .ach.cls{border:1px dashed #d9541e}
 .cele.ren .cele-k{color:#f2a33a}
-@media (max-width:520px){.rencols{grid-template-columns:1fr}.renrow{grid-template-columns:52px minmax(0,1fr)}.renrow>.btn,.renrow>.tag,.renrow>.pill{grid-column:2}}/* ===== 0.1.13 : album des archimonstres et Dofus ===== */
+@media (max-width:520px){.rencols{grid-template-columns:1fr}.renrow{grid-template-columns:52px minmax(0,1fr)}.renrow>.btn,.renrow>.tag,.renrow>.pill{grid-column:2}}
+/* ===== 0.1.13 : album des archimonstres et Dofus ===== */
 .archibtn.on{border-color:var(--archi)}
 .archipill{cursor:pointer}
 .dfico{width:20px;height:20px;object-fit:contain;vertical-align:middle;margin-right:2px}
@@ -1813,7 +1814,8 @@ nav.subnav .navdot{position:static;display:inline-block;margin-left:2px}
 .dcard ol{margin:2px 0 0;padding-left:18px;display:flex;flex-direction:column;gap:2px}.dcard li.ok{color:var(--muted);text-decoration:line-through}.dcard li.cur{font-weight:700}.dcard li.todo{color:var(--muted)}
 .celepet.soulpic{filter:drop-shadow(0 0 14px rgba(155,77,255,1)) drop-shadow(0 6px 4px rgba(0,0,0,.35))}
 .hcard.o-ame{box-shadow:0 10px 26px rgba(0,0,0,.55),0 0 0 3px #9b4dff,0 0 26px rgba(155,77,255,.8)}
-@media (max-width:640px){.agrid{grid-template-columns:1fr}.dgrid{grid-template-columns:1fr}.ztabs{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:640px){
+.agrid{grid-template-columns:1fr}.dgrid{grid-template-columns:1fr}.ztabs{grid-template-columns:repeat(3,1fr)}}
 /* 0.1.12.1 : identité du héros rené (cadre de feu, nom en flammes, combat) */
 .hcard.ren-braise,.hcard.ren-flamme,.hcard.ren-brasier,.hcard.ren-phenix{--rf1:#d9541e;--rf2:#ffc35a;--rf3:#7a2a0e;border-color:transparent;
   background:linear-gradient(var(--panel),var(--panel)) padding-box,conic-gradient(from var(--ang),var(--rf1),var(--rf2),var(--rf3),var(--rf2),var(--rf1)) border-box;animation:spin 6s linear infinite;

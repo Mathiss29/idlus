@@ -14,7 +14,9 @@ const ui = {
 };
 /* La version de test (/beta/) a sa propre sauvegarde : elle ne touche jamais la partie du jeu public. */
 const BETA = /\/beta\//.test(location.pathname);
-const LS_KEY = BETA ? "dofousxen-save-beta" : "dofousxen-save";/* ---------- Notes de mise à jour (bandeau « mise à jour appliquée ») ---------- */const GAME_VERSION = "0.1.13";
+const LS_KEY = BETA ? "dofousxen-save-beta" : "dofousxen-save";
+/* ---------- Notes de mise à jour (bandeau « mise à jour appliquée ») ---------- */
+const GAME_VERSION = "0.1.13";
 const DISCORD = "https://discord.gg/9ApPgWjPUM", DISCORD_BUGS = "https://discord.gg/2xX6F9764Z"; // invitation qui ouvre directement le forum des bugs
 const CHANGELOG = [
   { v: "0.1.13", name: "Archimonstres et Dofus", items: [
@@ -29,13 +31,15 @@ const CHANGELOG = [
   { v: "0.1.12.3", name: "L'équipement compte", items: [
     "Les monstres sont plus forts à partir du niveau 30 : une équipe sans équipement perd presque tous ses combats de chasse, et en donjon elle échoue ou passe tout juste la stasis 1. Aux premiers niveaux, rien ne change",
     "En chasse, les groupes comptent au moins 4 monstres dès les zones de niveau 25 ; les combats durent plus longtemps, mais chaque monstre donne plus d'XP, de butin et de kamas : une équipe bien équipée gagne autant par heure qu'avant",
-    "Paliers de donjon revus : bien équipé, une équipe vise la stasis 5 à 7 ; une équipe optimisée, la stasis 8 à 10" ] },  { v: "0.1.12.2", name: "Nouvelle adresse", items: [
+    "Paliers de donjon revus : bien équipé, une équipe vise la stasis 5 à 7 ; une équipe optimisée, la stasis 8 à 10" ] },
+  { v: "0.1.12.2", name: "Nouvelle adresse", items: [
     "Le jeu a une nouvelle adresse plus simple : idlus.github.io (la bêta : idlus.github.io/beta)",
     "L'ancienne adresse renvoie automatiquement vers la nouvelle et ta partie te suit : elle est reprise si ce navigateur n'a encore aucune partie à la nouvelle adresse" ] },
   { v: "0.1.12.1", name: "Identité du Phénix", items: [
     "Un héros rené se reconnaît partout : cadre de feu animé autour de sa carte (à la place du cadre de niveau, dont l'étiquette reste en bas), flammes et braises derrière lui, nom en lettres de feu avec « ✦ III », couleur qui suit le palier (Braise, Flamme, Brasier, Phénix)",
     "En combat : un foyer de flammes sous ses pieds et son chiffre de renaissance sous son nom (vue scène et vue compacte)",
-    "Page Équipe, choix du héros et plateau Réorganiser : nom doré et médaillon pour les héros renés" ] },  { v: "0.1.12", name: "Renaissance", items: [
+    "Page Équipe, choix du héros et plateau Réorganiser : nom doré et médaillon pour les héros renés" ] },
+  { v: "0.1.12", name: "Renaissance", items: [
     "Renaissance : au niveau 200, un héros peut renaître à la Statue du Phénix (Équipe › Renaissance, ou le bouton sur sa fiche). Il repart au niveau 1 en gardant son apparence, ses titres et ornements, ses Dofus et trophées (toujours équipés), son familier, sa monture et ses parchemins ; son équipement est rangé dans le sac",
     "Chaque renaissance donne à ce héros +30 % d'XP (en plus du plafond commun) et un Éveil au choix parmi 8, chacun en 3 rangs : Fureur (dégâts), Robustesse (PV), Écorce (résistances), Lame affûtée (critiques), Main bienveillante (soins et boucliers), Premier sang (dégâts au tour 1), Œil du chercheur (prospection), Meneur (dégâts de toute l'équipe)",
     "Renaissances V et X : l'Éveil de classe, qui renforce le passif de la classe (la Colère du Iop éclate à 5 puis 4 charges, le Crâ garde son bonus un tour de plus, l'Horloge du Xélor sonne plus tôt…) ; 10 renaissances au plus par héros",
@@ -863,7 +867,8 @@ function renderWorld() {
   }
   else if (ui.world === "dungeons") body = dungeonsHtml();
   else body = encyclopediaHtml();
-  $("#main").innerHTML = `<div class="pagehead"><h1>Le Monde des Douze</h1>${S.dungeon ? `<span class="tag warn">En donjon</span>` : ""}<span class="grow"></span>${archiBtn()}</div>
+  $("#main").innerHTML = `
+<div class="pagehead"><h1>Le Monde des Douze</h1>${S.dungeon ? `<span class="tag warn">En donjon</span>` : ""}<span class="grow"></span>${archiBtn()}</div>
     <nav class="subtabs">${tabs.map(([id, n]) => `<button data-act="worldtab" data-v="${id}" aria-pressed="${ui.world === id}">${n}</button>`).join("")}</nav>
     <div class="stack">${body}</div>`;
 }
@@ -2136,7 +2141,8 @@ function renderTeam() {
     <button class="btn sm reorg ${board ? "primary" : ""}" data-act="teamboard">${board ? "✓ Terminé" : `${G("swap")} Réorganiser`}</button></div>
   <section class="tsum"><div class="k"><b class="num">${team.length} / 8</b><span>en équipe</span></div><div class="k"><b class="num">${team.length ? Math.round(team.reduce((a, c) => a + c.lvl, 0) / team.length) : "–"}</b><span>niveau moyen</span></div>
     <div class="k"><b class="num">${team.filter((c) => fs.has(c.id)).length} · ${team.filter((c) => !fs.has(c.id)).length}</b><span>devant · derrière</span></div><div class="k"><b class="num">${by("job")}</b><span>en récolte</span></div><div class="k"><b class="num">${by("train")}</b><span>à l'entraînement</span></div>
-    <div class="k"><b class="num">${S.idols.active.length} / ${E.IDOL_MAX}</b><span>idoles actives</span></div>${idolBtn(null)}<div class="k"><b class="num">${E.soulCount(S)} / ${E.ARCHI_TOTAL}</b><span>âmes capturées</span></div>${archiBtn()}
+    <div class="k"><b class="num">${S.idols.active.length} / ${E.IDOL_MAX}</b><span>idoles actives</span></div>${idolBtn(null)}
+<div class="k"><b class="num">${E.soulCount(S)} / ${E.ARCHI_TOTAL}</b><span>âmes capturées</span></div>${archiBtn()}
     ${S.chars.length < 8 ? `<span class="grow"></span><button class="btn sm" data-act="recruitsheet">+ Recruter</button>` : ""}</section>
   ${board ? "" : compsHtml()}
   ${board ? teamBoardHtml() : `<section class="tgrid">${S.chars.map((c) => teamCard(c, al.filter((a) => a.c === c))).join("")}</section>`}`;
