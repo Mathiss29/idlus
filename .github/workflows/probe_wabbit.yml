@@ -1,0 +1,36 @@
+name: Sonde de l'Île des Wabbits
+# Importe DofusDB (inaccessible depuis l'espace de travail de Claude), construit la zone des Wabbits
+# et dépose le résultat dans tools/probe/wabbit/ sur la branche de travail. Ne touche ni à main ni à beta.
+on:
+  workflow_dispatch:
+  push:
+    branches: ['claude/project-thread-4c70nw']
+    paths: ['tools/probe_wabbit.py', '.github/workflows/probe_wabbit.yml']
+permissions:
+  contents: write
+concurrency: { group: sonde-wabbit, cancel-in-progress: true }
+jobs:
+  sonde:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - name: Import DofusDB
+        run: |
+          python3 tools/import_dofusdb.py
+          python3 tools/import_dofusdb.py
+      - name: Sonde et construction
+        run: |
+          mkdir -p build/assets
+          for d in c h i j m s; do [ -d assets/$d ] && cp -r assets/$d build/assets/ || true; done
+          python3 tools/probe_wabbit.py
+      - name: Dépôt sur la branche
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898699+github-actions[bot]@users.noreply.github.com"
+          git add tools/probe/wabbit
+          git commit -m "Sonde de l'Île des Wabbits : import DofusDB" || echo "rien à committer"
+          git pull --rebase origin claude/project-thread-4c70nw
+          git push
